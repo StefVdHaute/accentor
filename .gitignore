@@ -1,0 +1,13 @@
+# I don't have space for your libaries and binaries
+out/
+dist/
+
+# I don't care which editor you use
+.idea/
+.vscode/
+
+# I don't care which OS you use
+.DS_Store
+*.exe
+*.dll
+*.so

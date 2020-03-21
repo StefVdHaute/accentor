@@ -1,6 +1,7 @@
 # I don't have space for your libaries and binaries
 out/
 dist/
+lib/
 
 # I don't care which editor you use
 .idea/

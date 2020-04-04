@@ -1,11 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.Group?>
 <?import javafx.scene.control.Tab?>
 <?import javafx.scene.control.TabPane?>
+<?import javafx.scene.layout.BorderPane?>
 
-<Group xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1"      >
-   <children>
+
+<BorderPane xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1">
+   <center>
       <TabPane prefHeight="697.0" prefWidth="1054.0" tabClosingPolicy="UNAVAILABLE">
         <tabs>
             <Tab fx:id="artists" text="Artists">
@@ -16,5 +17,5 @@
             </Tab>
         </tabs>
       </TabPane>
-   </children>
-</Group>
+   </center>
+</BorderPane>

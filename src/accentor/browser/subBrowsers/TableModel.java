@@ -7,7 +7,7 @@ public abstract class TableModel<T> {
     private int page = 1;
     private int pages = 1;
 
-    public abstract void resetFinder();
+    public abstract void resetToOGFinder();
     public abstract void setFilter(String search);
     //public abstract setSort(SortOption sortOn, boolean, ascending);
 

@@ -1,1 +1,1 @@
-Only tableCells that do not rely on a model are saved here.
+Only tableCells that do not rely on a DAO are here, the others are local classes.

@@ -8,17 +8,17 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ArtistsModel extends TableModel<Artist> {
-    private ArtistDAO artistDAO;
+    private ArtistFinder ogFinder;
     private ArtistFinder finder;
 
-    public ArtistsModel(ArtistDAO artistDAO) {
-        this.artistDAO = artistDAO;
-        resetFinder();
+    public ArtistsModel(ArtistFinder finder) {
+        this.ogFinder = finder;
+        resetToOGFinder();
     }
 
     @Override
-    public void resetFinder() {
-        finder = artistDAO.list();
+    public void resetToOGFinder() {
+        finder = ogFinder;
     }
 
     @Override
@@ -51,7 +51,7 @@ public class ArtistsModel extends TableModel<Artist> {
         } catch (DataAccessException e) {
             e.printStackTrace();
 
-            resetFinder();
+            resetToOGFinder();
             artists = new ArrayList<>();
             setPage(1);
             setPages(1);

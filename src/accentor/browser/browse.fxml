@@ -7,13 +7,13 @@
 
 <BorderPane xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1">
    <center>
-      <TabPane prefHeight="697.0" prefWidth="1054.0" tabClosingPolicy="UNAVAILABLE">
+      <TabPane fx:id="tabPane" prefHeight="697.0" prefWidth="1054.0" tabClosingPolicy="ALL_TABS">
         <tabs>
-            <Tab fx:id="artists" text="Artists">
+            <Tab fx:id="artists" text="Artists" closable="false">
             </Tab>
-            <Tab fx:id="albums" text="Albums">
+            <Tab fx:id="albums" text="Albums" closable="false">
             </Tab>
-            <Tab fx:id="tracks" text="Tracks">
+            <Tab fx:id="tracks" text="Tracks" closable="false">
             </Tab>
         </tabs>
       </TabPane>

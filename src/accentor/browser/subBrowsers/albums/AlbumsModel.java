@@ -1,5 +1,6 @@
 package accentor.browser.subBrowsers.albums;
 
+import accentor.Helper;
 import accentor.api.*;
 import accentor.browser.subBrowsers.TableModel;
 import accentor.browser.subBrowsers.cells.NameListCellCompatible;
@@ -7,20 +8,19 @@ import accentor.domain.Album;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 public class AlbumsModel extends TableModel<Album> implements NameListCellCompatible<Album.AlbumArtist> {
-    private AlbumDAO albumDAO;
+    private AlbumFinder ogFinder;
     private AlbumFinder finder;
 
-    public AlbumsModel(AlbumDAO albumDAO) {
-        this.albumDAO = albumDAO;
-        resetFinder();
+    public AlbumsModel(AlbumFinder finder) {
+        this.ogFinder = finder;
+        resetToOGFinder();
     }
 
     @Override
-    public void resetFinder() {
-        finder = albumDAO.list();
+    public void resetToOGFinder() {
+        finder = ogFinder;
     }
 
     @Override
@@ -39,8 +39,7 @@ public class AlbumsModel extends TableModel<Album> implements NameListCellCompat
         finder = finder.setPage(getPage());
     }
 
-    //TODO: load pictures in cache with a task for quick access
-    @Override
+    @Override //TODO: load pictures in cache with a task for quick access
     public List<Album> getData() {
         List<Album> albums;
 
@@ -53,7 +52,7 @@ public class AlbumsModel extends TableModel<Album> implements NameListCellCompat
         } catch (DataAccessException e) {
             e.printStackTrace();
 
-            resetFinder();
+            resetToOGFinder();
             albums = new ArrayList<>();
             setPage(1);
             setPages(1);
@@ -62,13 +61,8 @@ public class AlbumsModel extends TableModel<Album> implements NameListCellCompat
         return albums;
     }
 
+    @Override
     public String getNames(List<Album.AlbumArtist> ids){
-        String name = "Not found";
-
-        if (ids != null){
-            name = ids.parallelStream().map(Album.AlbumArtist::getName).collect(Collectors.joining(", "));
-        }
-
-        return name;
+        return Helper.getArtistsAlbum(ids);
     }
 }

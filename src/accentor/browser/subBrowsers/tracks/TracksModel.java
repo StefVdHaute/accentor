@@ -2,6 +2,8 @@ package accentor.browser.subBrowsers.tracks;
 
 import accentor.api.*;
 import accentor.browser.subBrowsers.TableModel;
+import accentor.browser.subBrowsers.cells.AlbumCellCompatible;
+import accentor.browser.subBrowsers.cells.NameListCellCompatible;
 import accentor.domain.Track;
 
 import java.util.ArrayList;
@@ -9,7 +11,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class TracksModel extends TableModel<Track> {
+public class TracksModel
+        extends TableModel<Track>
+        implements AlbumCellCompatible, NameListCellCompatible<Track.TrackArtist> {
     private TrackDAO trackDAO;
     private AlbumDAO albumDAO;
     private TrackFinder finder;
@@ -69,7 +73,8 @@ public class TracksModel extends TableModel<Track> {
         return tracks;
     }
 
-    public String getArtistsName(List<Track.TrackArtist> ids){
+    @Override
+    public String getNames(List<Track.TrackArtist> ids){
         String name = "Not found";
 
         if (ids != null){
@@ -79,6 +84,7 @@ public class TracksModel extends TableModel<Track> {
         return name;
     }
 
+    @Override
     public String getAlbumName(String id){
         if (!albumcache.containsKey(id)) {
             try {

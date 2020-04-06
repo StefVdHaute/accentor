@@ -1,16 +1,17 @@
 package accentor.browser.subBrowsers.tracks;
 
 import accentor.browser.subBrowsers.TableCompanion;
+import accentor.browser.subBrowsers.cells.AlbumCell;
+import accentor.browser.subBrowsers.cells.DurationCell;
+import accentor.browser.subBrowsers.cells.NameListCell;
 import accentor.domain.Track;
 import javafx.fxml.FXML;
-import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.cell.PropertyValueFactory;
 
 import java.util.List;
 
 public class TracksCompanion extends TableCompanion<TracksModel, Track> {
-
     private TableColumn<Track, String> title                   = new TableColumn<>("Title");
     private TableColumn<Track, List<Track.TrackArtist>> artist = new TableColumn<>("Artist");
     private TableColumn<Track, Integer> nr                     = new TableColumn<>("#");
@@ -39,60 +40,13 @@ public class TracksCompanion extends TableCompanion<TracksModel, Track> {
         album.setCellValueFactory( new PropertyValueFactory<>("albumId"));
         length.setCellValueFactory( new PropertyValueFactory<>("length"));
 
-        artist.setCellFactory(column -> new ArtistCell());
-        album.setCellFactory(column -> new AlbumCell());
-        length.setCellFactory(column -> new LengthCell());
+        artist.setCellFactory(column -> new NameListCell<>(model));
+        album.setCellFactory(column -> new AlbumCell<>(model));
+        length.setCellFactory(column -> new DurationCell<>());
 
         table.getItems().addAll(model.getData());
 
         updateButtons(1, model.getPages());
         updateLabel();
-    }
-
-    private class ArtistCell extends TableCell<Track, List<Track.TrackArtist>> {
-        @Override
-        public void updateItem(List<Track.TrackArtist> ids, boolean empty){
-            super.updateItem(ids, empty);
-
-            if (empty) {
-                setText(null);
-            } else {
-                String name = model.getArtistsName(ids);
-                setText(name);
-            }
-        }
-    }
-
-    private class AlbumCell extends TableCell<Track, String> {
-        @Override
-        public void updateItem(String id, boolean empty){
-            super.updateItem(id, empty);
-
-            if (empty) {
-                setText(null);
-            } else {
-                setText(model.getAlbumName(id));
-            }
-        }
-
-    }
-
-    private class LengthCell extends TableCell<Track, Integer> {
-        @Override
-        public void updateItem(Integer duration, boolean empty){
-            super.updateItem(duration, empty);
-            if (empty) {
-                setText(null);
-            } else {
-                int min = duration / 60;
-                int sec = duration % 60;
-
-                if (sec >= 10) {
-                    setText(min + ":" + sec);
-                } else {
-                    setText(min + ":0" + sec);
-                }
-            }
-        }
     }
 }

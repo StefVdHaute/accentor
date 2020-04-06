@@ -1,0 +1,1 @@
+Only tableCells that do not rely on a model are saved here.

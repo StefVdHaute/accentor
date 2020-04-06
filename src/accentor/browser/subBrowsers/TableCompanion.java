@@ -17,7 +17,7 @@ public abstract class TableCompanion<M extends TableModel<T>, T> {
     public Button next;
     @FXML
     public Button largeNext;
-    @FXML
+    @FXML // I use a tableView to give the user the option to choose which columns are shown
     public TableView<T> table;
 
     protected M model;// Need model to much to make this private

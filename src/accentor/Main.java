@@ -16,6 +16,7 @@ import javafx.stage.Stage;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.List;
 import java.util.Properties;
 
 public class Main extends Application {
@@ -26,14 +27,21 @@ public class Main extends Application {
 
     @Override
     public void init() {
-        try (InputStream input = new FileInputStream("resources/accentor/accentor.properties")) {
+        List<String> argList = getParameters().getRaw();
+
+        String propertiesPath = "resources/accentor/accentor.properties";
+
+        if (!argList.isEmpty()){
+            propertiesPath = argList.get(0);
+        }
+
+        try (InputStream input = new FileInputStream(propertiesPath)) {
             accProperties = new Properties(0);
             accProperties.load(input);
 
             dap = new HttpDataAccessProvider(accProperties);
             dac = dap.getDataAccessContext();
         } catch (IOException | DataAccessException e) {
-            //TODO: catch properly
             e.printStackTrace();
         }
     }
@@ -46,17 +54,17 @@ public class Main extends Application {
         Scene scene = new Scene(root);
 
         //.ico support would be nice :'(
-        //This also doesn't seem to work properly with Docky on linux mint
+        //This also doesn't seem to work properly with Docky on linux mint, Docky's fault?
         primaryStage.getIcons().add(new Image("accentor/images/rippoffyX256.png"));
         primaryStage.getIcons().add(new Image("accentor/images/rippoffyX128.png"));
         primaryStage.getIcons().add(new Image("accentor/images/rippoffyX64.png"));
-        primaryStage.setTitle("Rippoffy, the best, worst music player.");
+        primaryStage.setTitle("Ripoffy, the best, worst music player.");
 
         primaryStage.setScene(scene);
         primaryStage.show();
     }
 
-    public static void main(String[] args){//TODO: init with arg instead of properties.
+    public static void main(String[] args){
         launch(args);
     }
 }

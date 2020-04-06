@@ -1,11 +1,10 @@
 package accentor.browser.subBrowsers.artists;
 
+import accentor.browser.subBrowsers.TableCompanion;
 import accentor.domain.Artist;
-import javafx.scene.control.ListView;
 
-public class ArtistsCompanion {
-    public ListView<Artist> artists;
-
-    public ArtistsCompanion(ArtistModel model) {
+public class ArtistsCompanion extends TableCompanion<ArtistsModel, Artist> {
+    public ArtistsCompanion(ArtistsModel model) {
+        super(model);
     }
 }

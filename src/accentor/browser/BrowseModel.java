@@ -1,29 +1,29 @@
 package accentor.browser;
 
 import accentor.api.DataAccessContext;
-import accentor.browser.subBrowsers.albums.AlbumModel;
-import accentor.browser.subBrowsers.artists.ArtistModel;
+import accentor.browser.subBrowsers.albums.AlbumsModel;
+import accentor.browser.subBrowsers.artists.ArtistsModel;
 import accentor.browser.subBrowsers.tracks.TracksModel;
 
 public class BrowseModel {
     private DataAccessContext dac;
 
-    private ArtistModel artistsModel;
-    private AlbumModel albumsModel;
+    private ArtistsModel artistsModel;
+    private AlbumsModel albumsModel;
     private TracksModel tracksModel;
 
     public BrowseModel(DataAccessContext dac){
         this.dac = dac;
-        artistsModel = new ArtistModel(dac.getArtistDAO());
-        albumsModel = new AlbumModel(dac.getAlbumDAO());
+        artistsModel = new ArtistsModel(dac.getArtistDAO());
+        albumsModel = new AlbumsModel(dac.getAlbumDAO());
         tracksModel = new TracksModel(dac.getTrackDAO(), dac.getAlbumDAO());
     }
 
-    public ArtistModel getArtistsModel() {
+    public ArtistsModel getArtistsModel() {
         return artistsModel;
     }
 
-    public AlbumModel getAlbumsModel() {
+    public AlbumsModel getAlbumsModel() {
         return albumsModel;
     }
 
@@ -31,7 +31,7 @@ public class BrowseModel {
         return tracksModel;
     }
 
-    public void setAlbumsModel(AlbumModel albumsModel) {
+    public void setAlbumsModel(AlbumsModel albumsModel) {
         this.albumsModel = albumsModel;
     }
 }

@@ -12,3 +12,6 @@ lib/
 *.exe
 *.dll
 *.so
+
+# I don't want to share my TODO's
+TODO.md

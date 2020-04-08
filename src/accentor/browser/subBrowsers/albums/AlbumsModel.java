@@ -12,7 +12,7 @@ import accentor.domain.Album;
 import java.util.ArrayList;
 import java.util.List;
 
-public class AlbumsModel extends TableModel<Album> implements NameListCellCompatible<Album.AlbumArtist> {
+public class AlbumsModel extends TableModel<Album, AlbumFinder.SortOption> implements NameListCellCompatible<Album.AlbumArtist> {
     private AlbumFinder ogFinder;
     private AlbumFinder finder;
 
@@ -28,9 +28,10 @@ public class AlbumsModel extends TableModel<Album> implements NameListCellCompat
 
     @Override
     public void setFilter(String search) {
-        finder.setFilter(search);
+        finder = finder.setFilter(search);
     }
 
+    @Override
     public void setSort(AlbumFinder.SortOption sortOn, boolean ascending){
         SortDirection dir = ascending ? SortDirection.ASCENDING : SortDirection.DESCENDING;
         finder = finder.setSortKey(sortOn).setSortDirection(dir);

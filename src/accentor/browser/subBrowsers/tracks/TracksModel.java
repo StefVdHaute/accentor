@@ -12,7 +12,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class TracksModel
-        extends TableModel<Track>
+        extends TableModel<Track, TrackFinder.SortOption>
         implements AlbumCellCompatible, NameListCellCompatible<Track.TrackArtist> {
     private BrowseModel superBrowser;
 
@@ -36,6 +36,7 @@ public class TracksModel
         finder = finder.setFilter(search);
     }
 
+    @Override
     public void setSort(TrackFinder.SortOption sortOn, boolean ascending){
         SortDirection dir = ascending ? SortDirection.ASCENDING : SortDirection.DESCENDING;
         finder = finder.setSortKey(sortOn).setSortDirection(dir);

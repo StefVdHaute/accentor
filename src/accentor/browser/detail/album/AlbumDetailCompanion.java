@@ -23,7 +23,7 @@ public class AlbumDetailCompanion extends DetailCompanion<AlbumDetailModel, Albu
 
     @FXML
     public void initialize(){
-        Album album = getModel().getSubject();
+        Album album =getModel().getSubject();
 
         tab.setText(album.getTitle());
         title.setText(album.getTitle());
@@ -39,6 +39,7 @@ public class AlbumDetailCompanion extends DetailCompanion<AlbumDetailModel, Albu
             fxmlLoader = new FXMLLoader(BrowseModel.class.getResource("subBrowsers/table.fxml"));
             fxmlLoader.setController(tracksCompanion);
             BorderPane pane = fxmlLoader.load();
+            tracksCompanion.setAlbumsVisible(false);
 
             VBox.setVgrow(pane, Priority.ALWAYS);// So that the table uses all available space
             details.getChildren().add(pane);

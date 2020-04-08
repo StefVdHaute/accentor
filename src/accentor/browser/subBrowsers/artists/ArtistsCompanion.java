@@ -1,9 +1,11 @@
 package accentor.browser.subBrowsers.artists;
 
+import accentor.api.ArtistFinder;
 import accentor.browser.BrowseCompanion;
 import accentor.browser.subBrowsers.TableCompanion;
 import accentor.browser.subBrowsers.cells.PictureCell;
 import accentor.domain.Artist;
+
 import javafx.fxml.FXML;
 import javafx.geometry.Pos;
 import javafx.scene.control.TableCell;
@@ -12,7 +14,7 @@ import javafx.scene.control.TableRow;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.text.Font;
 
-public class ArtistsCompanion extends TableCompanion<ArtistsModel, Artist> {
+public class ArtistsCompanion extends TableCompanion<ArtistsModel, Artist, ArtistFinder.SortOption> {
     private TableColumn<Artist, String> picture = new TableColumn<>();
     private TableColumn<Artist, String> name  = new TableColumn<>();
 
@@ -21,6 +23,8 @@ public class ArtistsCompanion extends TableCompanion<ArtistsModel, Artist> {
     public ArtistsCompanion(BrowseCompanion superCompanion, ArtistsModel model) {
         super(model);
         this.superCompanion = superCompanion;
+
+        sortMap.put(name.getText(), ArtistFinder.SortOption.BY_NAME);
     }
 
     @FXML
@@ -33,6 +37,7 @@ public class ArtistsCompanion extends TableCompanion<ArtistsModel, Artist> {
         picture.setMinWidth(110);
         picture.setMaxWidth(120);
         picture.setResizable(false);
+        picture.setSortable(false);
 
         picture.setCellValueFactory( new PropertyValueFactory<>("smallImageURL"));
         name.setCellValueFactory( new PropertyValueFactory<>("name"));

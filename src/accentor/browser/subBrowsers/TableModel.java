@@ -1,17 +1,15 @@
 package accentor.browser.subBrowsers;
 
-import accentor.browser.BrowseModel;
-
 import java.util.List;
 
 //TableModel could implement more if sortOptions and finders were generalized :'(
-public abstract class TableModel<T> {
+public abstract class TableModel<T, S> {
     private int page = 1;
     private int pages = 1;
 
     public abstract void resetToOGFinder();
     public abstract void setFilter(String search);
-    //public abstract setSort(SortOption sortOn, boolean, ascending);
+    public abstract void setSort(S s, boolean ascending);
 
     public abstract List<T> getData();
 

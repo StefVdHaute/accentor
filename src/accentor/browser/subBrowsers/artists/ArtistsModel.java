@@ -1,14 +1,13 @@
 package accentor.browser.subBrowsers.artists;
 
 import accentor.api.*;
-import accentor.browser.BrowseModel;
 import accentor.browser.subBrowsers.TableModel;
 import accentor.domain.Artist;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class ArtistsModel extends TableModel<Artist> {
+public class ArtistsModel extends TableModel<Artist, ArtistFinder.SortOption> {
     private ArtistFinder ogFinder;
     private ArtistFinder finder;
 
@@ -27,6 +26,7 @@ public class ArtistsModel extends TableModel<Artist> {
         finder = finder.setFilter(search);
     }
 
+    @Override
     public void setSort(ArtistFinder.SortOption sortOn, boolean ascending){
         SortDirection dir = ascending ? SortDirection.ASCENDING : SortDirection.DESCENDING;
         finder = finder.setSortKey(sortOn).setSortDirection(dir);

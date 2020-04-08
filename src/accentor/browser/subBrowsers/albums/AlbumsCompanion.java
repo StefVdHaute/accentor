@@ -1,11 +1,13 @@
 package accentor.browser.subBrowsers.albums;
 
+import accentor.api.AlbumFinder;
 import accentor.browser.BrowseCompanion;
 import accentor.browser.subBrowsers.TableCompanion;
 import accentor.browser.subBrowsers.cells.DateCell;
 import accentor.browser.subBrowsers.cells.NameListCell;
 import accentor.browser.subBrowsers.cells.PictureCell;
 import accentor.domain.Album;
+
 import javafx.fxml.FXML;
 import javafx.geometry.Pos;
 import javafx.scene.control.TableCell;
@@ -16,7 +18,7 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import java.time.LocalDate;
 import java.util.List;
 
-public class AlbumsCompanion extends TableCompanion<AlbumsModel, Album> {
+public class AlbumsCompanion extends TableCompanion<AlbumsModel, Album, AlbumFinder.SortOption> {
     private TableColumn<Album, String> cover                   = new TableColumn<>("Cover");
     private TableColumn<Album, String> title                   = new TableColumn<>("Title");
     private TableColumn<Album, List<Album.AlbumArtist>> artist = new TableColumn<>("Artist");
@@ -27,12 +29,14 @@ public class AlbumsCompanion extends TableCompanion<AlbumsModel, Album> {
     public AlbumsCompanion(BrowseCompanion superCompanion, AlbumsModel model) {
         super(model);
         this.superCompanion = superCompanion;
+
+        sortMap.put(title.getText(), AlbumFinder.SortOption.BY_TITLE);
+        sortMap.put(release.getText(), AlbumFinder.SortOption.BY_RELEASED);
     }
 
     @FXML
     public void initialize() {
         super.initialize();
-
         table.getColumns().add(cover);
         table.getColumns().add(title);
         table.getColumns().add(artist);
@@ -41,6 +45,9 @@ public class AlbumsCompanion extends TableCompanion<AlbumsModel, Album> {
         cover.setMinWidth(110);
         cover.setMaxWidth(120);
         cover.setResizable(false);
+        cover.setSortable(false);
+
+        artist.setSortable(false);
 
         release.setMinWidth(120);
         release.setMaxWidth(130);

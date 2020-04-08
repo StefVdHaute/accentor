@@ -1,12 +1,16 @@
 package accentor.browser.subBrowsers;
 
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.TableView;
+import javafx.scene.control.*;
+import javafx.scene.input.KeyCode;
 
-public abstract class TableCompanion<M extends TableModel<T>, T> {
+import java.util.HashMap;
+
+public abstract class TableCompanion<M extends TableModel<T, S>, T, S> {
+    @FXML
+    public TextField searchString;
     @FXML
     public Label pageNumber;
     @FXML
@@ -20,7 +24,9 @@ public abstract class TableCompanion<M extends TableModel<T>, T> {
     @FXML // I use a tableView to give the user the option to choose which columns are shown
     public TableView<T> table;
 
-    protected M model;// Need model to much to make this private
+    // Needed to much to make these private
+    protected M model;
+    protected HashMap<String, S> sortMap = new HashMap<>();// Do not use getId since it results in unexpected sorting
 
     public TableCompanion(M model){
         this.model = model;
@@ -34,10 +40,36 @@ public abstract class TableCompanion<M extends TableModel<T>, T> {
         next.setUserData(1);
         largeNext.setUserData(5);
 
-        table.setSortPolicy(x -> null);
+        searchString.setOnKeyPressed(event -> {
+            if(event.getCode().equals(KeyCode.ENTER)) {
+                search();
+            }
+        });
+
+        table.setSortPolicy(table -> {
+            ObservableList<TableColumn<T, ?>> columns = table.getSortOrder();
+
+            if (!columns.isEmpty()) {
+                String sortOn = columns.get(0).getText();
+                boolean ascending = columns.get(0).getSortType() == TableColumn.SortType.ASCENDING;
+
+                model.setSort(sortMap.get(sortOn), ascending);
+                refreshData();
+            }
+
+            return true;
+        });
+
     }
 
     /////////////////////////////////////////////////Buttonfunctions////////////////////////////////////////////////////
+    public void search(){
+        model.resetToOGFinder();
+        model.setFilter(searchString.getText());
+
+        refreshData();
+    }
+
     protected void changePage(int increment) {
         model.changePage(increment);
         table.getItems().clear();
@@ -63,5 +95,13 @@ public abstract class TableCompanion<M extends TableModel<T>, T> {
 
     protected void updateLabel() {//TODO: change to listener in model
         pageNumber.setText(model.getPage() + "/" + model.getPages());
+    }
+
+    public void refreshData(){
+        table.getItems().clear();
+        table.getItems().addAll(model.getData());
+
+        updateLabel();
+        updateButtons(model.getPage(), model.getPages());
     }
 }

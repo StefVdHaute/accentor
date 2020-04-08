@@ -23,7 +23,6 @@ public class Main extends Application {
     private Properties accProperties;
     private HttpDataAccessProvider dap;
     private DataAccessContext dac;
-    private FXMLLoader fxmlLoader;
 
     @Override
     public void init() {
@@ -48,7 +47,7 @@ public class Main extends Application {
 
     @Override
     public void start(final Stage primaryStage) throws IOException{
-        fxmlLoader = new FXMLLoader(getClass().getResource("browser/browse.fxml"));
+        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("browser/browse.fxml"));
         fxmlLoader.setController(new BrowseCompanion(new BrowseModel(dac)));
         BorderPane root = fxmlLoader.load();
         Scene scene = new Scene(root);
@@ -62,6 +61,7 @@ public class Main extends Application {
 
         primaryStage.setScene(scene);
         primaryStage.show();
+        primaryStage.setMaximized(true);
     }
 
     public static void main(String[] args){

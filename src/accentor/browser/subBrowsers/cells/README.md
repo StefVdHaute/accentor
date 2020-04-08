@@ -1,1 +1,0 @@
-Only tableCells that do not rely on a DAO are here, the others are local classes.

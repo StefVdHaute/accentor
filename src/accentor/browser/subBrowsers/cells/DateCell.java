@@ -1,19 +1,16 @@
 package accentor.browser.subBrowsers.cells;
 
+import javafx.geometry.Pos;
 import javafx.scene.control.TableCell;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 
 public class DateCell<T> extends TableCell<T, LocalDate> {
-    private String pattern;
 
     public DateCell(){
-        pattern = "dd/MM/yyyy";
-    };
-
-    public DateCell(String datePattern){
-        pattern = datePattern;
+        super();
+        setAlignment(Pos.CENTER);
     };
 
     @Override
@@ -23,7 +20,7 @@ public class DateCell<T> extends TableCell<T, LocalDate> {
         if (empty) {
             setText(null);
         } else {
-            setText(date.format(DateTimeFormatter.ofPattern(pattern)));
+            setText(date.format(DateTimeFormatter.ofPattern("dd/MM/yyyy")));
         }
     }
 }

@@ -35,6 +35,7 @@ public class Helper {
             name = String.join("", names);
         }
 
-        return name;
+        // I think the substring method is the easiest, it's either this or comparing everything for null
+        return name.substring(0, name.length() - 4);
     }
 }

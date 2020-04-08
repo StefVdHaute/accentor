@@ -7,6 +7,9 @@ import accentor.browser.subBrowsers.tracks.TracksModel;
 import accentor.domain.Album;
 import accentor.domain.Artist;
 import accentor.domain.Track;
+import javafx.scene.control.Tab;
+
+import java.util.HashMap;
 
 public class BrowseModel {
     private ArtistDAO artistDAO;
@@ -16,6 +19,10 @@ public class BrowseModel {
     private ArtistsModel artistsModel;
     private AlbumsModel albumsModel;
     private TracksModel tracksModel;
+
+    private HashMap<String, Tab> artistTabs = new HashMap<>();
+    private HashMap<String, Tab> albumTabs = new HashMap<>();
+    private HashMap<String, Album> albumCache = new HashMap<>();
 
     public BrowseModel(DataAccessContext dac){
         artistDAO = dac.getArtistDAO();
@@ -48,13 +55,17 @@ public class BrowseModel {
         }
     }
 
+    // This is only used for getting albumtitle's so instead of caching objects maybe cache title's
     public Album findAlbum(String id){
         try {
-            return albumDAO.findById(id);
+            if (!albumCache.containsKey(id)) {
+                albumCache.put(id, albumDAO.findById(id));
+            }
         } catch (DataAccessException e) {
             e.printStackTrace();
-            return null;
         }
+
+        return albumCache.get(id);
     }
 
     public Track findTrack(String id){
@@ -76,5 +87,13 @@ public class BrowseModel {
 
     public TrackFinder getTracks(Album album) {
         return albumDAO.tracks(album);
+    }
+
+    public HashMap<String, Tab> getArtistTabs() {
+        return artistTabs;
+    }
+
+    public HashMap<String, Tab> getAlbumTabs() {
+        return albumTabs;
     }
 }

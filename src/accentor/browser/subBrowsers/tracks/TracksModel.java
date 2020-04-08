@@ -9,25 +9,20 @@ import accentor.browser.subBrowsers.cells.NameListCellCompatible;
 import accentor.domain.Track;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 
 public class TracksModel
         extends TableModel<Track>
         implements AlbumCellCompatible, NameListCellCompatible<Track.TrackArtist> {
     private BrowseModel superBrowser;
+
     private TrackFinder ogFinder;
     private TrackFinder finder;
 
-    private HashMap<String, String> albumcache = new HashMap<>();
-    {
-        albumcache.put(null, "Not found");
-    }
-
     public TracksModel(TrackFinder finder, BrowseModel superBrowser) {
-        this.ogFinder = finder;
         this.superBrowser = superBrowser;
 
+        this.ogFinder = finder;
         resetToOGFinder();
     }
 
@@ -81,10 +76,6 @@ public class TracksModel
 
     @Override
     public String getAlbumName(String id){
-        if (!albumcache.containsKey(id)) {
-            albumcache.put(id, superBrowser.findAlbum(id).getTitle());
-        }
-
-        return albumcache.get(id);
+        return superBrowser.findAlbum(id).getTitle();
     }
 }

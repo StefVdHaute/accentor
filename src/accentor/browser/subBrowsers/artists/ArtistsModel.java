@@ -1,6 +1,7 @@
 package accentor.browser.subBrowsers.artists;
 
 import accentor.api.*;
+import accentor.browser.BrowseModel;
 import accentor.browser.subBrowsers.TableModel;
 import accentor.domain.Artist;
 

@@ -1,7 +1,10 @@
 package accentor.browser.subBrowsers.albums;
 
 import accentor.Helper;
-import accentor.api.*;
+import accentor.api.AlbumFinder;
+import accentor.api.DataAccessException;
+import accentor.api.PaginatedResult;
+import accentor.api.SortDirection;
 import accentor.browser.subBrowsers.TableModel;
 import accentor.browser.subBrowsers.cells.NameListCellCompatible;
 import accentor.domain.Album;

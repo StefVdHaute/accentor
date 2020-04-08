@@ -14,9 +14,9 @@ import java.util.List;
 public class TracksCompanion extends TableCompanion<TracksModel, Track> {
     private TableColumn<Track, String> title                   = new TableColumn<>("Title");
     private TableColumn<Track, List<Track.TrackArtist>> artist = new TableColumn<>("Artist");
-    private TableColumn<Track, Integer> nr                     = new TableColumn<>("#");
+    private TableColumn<Track, Integer> nr                     = new TableColumn<>();
     private TableColumn<Track, String> album                   = new TableColumn<>("Album");
-    private TableColumn<Track, Integer> length                 = new TableColumn<>("Length");
+    private TableColumn<Track, Integer> length                 = new TableColumn<>();
 
     public TracksCompanion(TracksModel model) {
         super(model);
@@ -27,16 +27,25 @@ public class TracksCompanion extends TableCompanion<TracksModel, Track> {
         super.initialize();
 
         //Adding columns to tableview
+        table.getColumns().add(nr);
         table.getColumns().add(title);
         table.getColumns().add(artist);
-        table.getColumns().add(nr);
         table.getColumns().add(album);
         table.getColumns().add(length);
 
+        //Changing column widths
+        nr.setMinWidth(20);
+        nr.setMaxWidth(30);
+        nr.setResizable(false);
+        length.setMinWidth(65);
+        length.setMaxWidth(65);
+        length.setResizable(false);
+
+
         //Setting cellValueFactory's
+        nr.setCellValueFactory( new PropertyValueFactory<>("number"));
         title.setCellValueFactory( new PropertyValueFactory<>("title"));
         artist.setCellValueFactory( new PropertyValueFactory<>("trackArtists"));
-        nr.setCellValueFactory( new PropertyValueFactory<>("number"));
         album.setCellValueFactory( new PropertyValueFactory<>("albumId"));
         length.setCellValueFactory( new PropertyValueFactory<>("length"));
 

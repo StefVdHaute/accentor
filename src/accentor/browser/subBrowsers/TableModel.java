@@ -1,5 +1,7 @@
 package accentor.browser.subBrowsers;
 
+import accentor.browser.BrowseModel;
+
 import java.util.List;
 
 //TableModel could implement more if sortOptions and finders were generalized :'(

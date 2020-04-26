@@ -1,14 +1,15 @@
 package accentor.browser.subBrowsers.tracks;
 
 import accentor.api.TrackFinder;
+import accentor.browser.BrowseCompanion;
 import accentor.browser.subBrowsers.TableCompanion;
 import accentor.browser.subBrowsers.cells.AlbumCell;
 import accentor.browser.subBrowsers.cells.DurationCell;
 import accentor.browser.subBrowsers.cells.NameListCell;
 import accentor.domain.Track;
-
 import javafx.fxml.FXML;
 import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableRow;
 import javafx.scene.control.cell.PropertyValueFactory;
 
 import java.util.List;
@@ -19,9 +20,9 @@ public class TracksCompanion extends TableCompanion<TracksModel, Track, TrackFin
     private TableColumn<Track, List<Track.TrackArtist>> artist = new TableColumn<>("Artist");
     private TableColumn<Track, String> album                   = new TableColumn<>("Album");
     private TableColumn<Track, Integer> length                 = new TableColumn<>("Time");
-
-    public TracksCompanion(TracksModel model) {
-        super(model);
+    
+    public TracksCompanion(BrowseCompanion superCompanion, TracksModel model) {
+        super(superCompanion, model);
 
         sortMap.put(album.getText(), TrackFinder.SortOption.BY_ALBUM_TITLE);
     }
@@ -62,13 +63,25 @@ public class TracksCompanion extends TableCompanion<TracksModel, Track, TrackFin
         album.setCellFactory(column -> new AlbumCell<>(model));
         length.setCellFactory(column -> new DurationCell<>());
 
+        table.setRowFactory(column -> {
+            TableRow<Track> row = new TableRow<>();
+            row.setOnMouseClicked(event -> play(row.getItem()));
+            return row;
+        });
+
         table.getItems().addAll(model.getData());
 
         updateButtons(1, model.getPages());
         updateLabel();
     }
 
-    public void setAlbumsVisible(boolean visible){
-        album.setVisible(visible);
+    public void runAlbumDetailMode(boolean yes){//TODO: kies betere namen
+        album.setVisible(!yes);
+    }
+
+    private void play(Track track){
+        if (track != null) {
+            superCompanion.playSong(track);
+        }
     }
 }

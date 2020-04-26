@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.layout.BorderPane?>
+
+<BorderPane fx:id="pane" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1">
+    <center>
+        <TableView fx:id="table" prefHeight="200.0" prefWidth="200.0" tableMenuButtonVisible="true" BorderPane.alignment="CENTER">
+            <columnResizePolicy>
+                <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
+            </columnResizePolicy>
+         <columns>
+            <TableColumn fx:id="title" prefWidth="75.0" sortable="false" text="Title" />
+            <TableColumn fx:id="artist" prefWidth="75.0" sortable="false" text="Artist" />
+            <TableColumn fx:id="album" prefWidth="75.0" sortable="false" text="Album" />
+            <TableColumn fx:id="length" minWidth="55.0" maxWidth="55.0" sortable="false" resizable="false" text="Time" />
+         </columns>
+        </TableView>
+    </center>
+</BorderPane>

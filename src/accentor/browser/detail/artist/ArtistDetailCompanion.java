@@ -32,7 +32,7 @@ public class ArtistDetailCompanion extends DetailCompanion<ArtistDetailModel, Ar
         image.setImage(new Image(artist.getLargeImageURL()));
 
         AlbumsCompanion albumsCompanion = new AlbumsCompanion(superCompanion, getModel().getAlbumsModel());
-        TracksCompanion tracksCompanion = new TracksCompanion(getModel().getTracksModel());
+        TracksCompanion tracksCompanion = new TracksCompanion(superCompanion, getModel().getTracksModel());
 
         try {
             FXMLLoader fxmlLoader;

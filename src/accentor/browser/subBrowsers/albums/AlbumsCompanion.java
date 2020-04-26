@@ -24,11 +24,8 @@ public class AlbumsCompanion extends TableCompanion<AlbumsModel, Album, AlbumFin
     private TableColumn<Album, List<Album.AlbumArtist>> artist = new TableColumn<>("Artist");
     private TableColumn<Album, LocalDate> release              = new TableColumn<>("Release date");
 
-    private BrowseCompanion superCompanion;
-
     public AlbumsCompanion(BrowseCompanion superCompanion, AlbumsModel model) {
-        super(model);
-        this.superCompanion = superCompanion;
+        super(superCompanion, model);
 
         sortMap.put(title.getText(), AlbumFinder.SortOption.BY_TITLE);
         sortMap.put(release.getText(), AlbumFinder.SortOption.BY_RELEASED);

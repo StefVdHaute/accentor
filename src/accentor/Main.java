@@ -7,8 +7,10 @@ import accentor.browser.BrowseCompanion;
 import accentor.browser.BrowseModel;
 
 import javafx.application.Application;
+import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.image.Image;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
@@ -41,12 +43,18 @@ public class Main extends Application {
             dap = new HttpDataAccessProvider(accProperties);
             dac = dap.getDataAccessContext();
         } catch (IOException | DataAccessException e) {
+            //Can really only be used for the console or trying to connect again
             e.printStackTrace();
         }
     }
 
     @Override
     public void start(final Stage primaryStage) throws IOException{
+        if (dac == null) {
+            error("Something went wrong", "Something went wrong\nwhile trying to acces the server.");
+            System.exit(1);
+        }
+
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("browser/browse.fxml"));
         fxmlLoader.setController(new BrowseCompanion(new BrowseModel(dac)));
         BorderPane root = fxmlLoader.load();
@@ -66,5 +74,16 @@ public class Main extends Application {
 
     public static void main(String[] args){
         launch(args);
+    }
+
+    public void error(String header, String context) {
+        Alert errorAlert = new Alert(Alert.AlertType.ERROR);
+        errorAlert.setHeaderText(header);
+        errorAlert.setContentText(context);
+
+        Stage stage = (Stage) errorAlert.getDialogPane().getScene().getWindow();
+        stage.getIcons().add(new Image("accentor/images/rippoffyX64.png"));
+
+        errorAlert.showAndWait();
     }
 }

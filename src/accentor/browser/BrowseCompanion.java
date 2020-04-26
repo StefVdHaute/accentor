@@ -4,26 +4,33 @@ import accentor.browser.detail.album.AlbumDetailCompanion;
 import accentor.browser.detail.album.AlbumDetailModel;
 import accentor.browser.detail.artist.ArtistDetailCompanion;
 import accentor.browser.detail.artist.ArtistDetailModel;
+import accentor.browser.player.PlayerCompanion;
 import accentor.browser.subBrowsers.albums.AlbumsCompanion;
 import accentor.browser.subBrowsers.artists.ArtistsCompanion;
+import accentor.browser.subBrowsers.queue.QueueCompanion;
 import accentor.browser.subBrowsers.tracks.TracksCompanion;
 import accentor.domain.Album;
 import accentor.domain.Artist;
+import accentor.domain.Track;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
+import javafx.scene.layout.BorderPane;
 
 import java.io.IOException;
 import java.util.HashMap;
 
 public class BrowseCompanion {
+    @FXML public BorderPane base;
     @FXML public TabPane tabPane;
+    @FXML public Tab queue;
     @FXML public Tab artists;
     @FXML public Tab albums;
     @FXML public Tab tracks;
 
     private BrowseModel model;
+    private PlayerCompanion playerCompanion;
 
     public BrowseCompanion(BrowseModel model){
         this.model = model;
@@ -32,11 +39,17 @@ public class BrowseCompanion {
     @FXML
     public void initialize(){
         FXMLLoader fxmlLoader;
+        QueueCompanion queueCompanion = new QueueCompanion(model.getQueueModel());
         ArtistsCompanion artistsCompanion = new ArtistsCompanion(this, model.getArtistsModel());
         AlbumsCompanion albumsCompanion = new AlbumsCompanion(this, model.getAlbumsModel());
-        TracksCompanion tracksCompanion = new TracksCompanion(model.getTracksModel());
+        TracksCompanion tracksCompanion = new TracksCompanion(this, model.getTracksModel());
+        this.playerCompanion = new PlayerCompanion(model.getQueueModel());
 
         try {
+            fxmlLoader = new FXMLLoader(getClass().getResource("subBrowsers/queue/queue.fxml"));
+            fxmlLoader.setController(queueCompanion);
+            queue.setContent(fxmlLoader.load());
+
             fxmlLoader = new FXMLLoader(getClass().getResource("subBrowsers/table.fxml"));
             fxmlLoader.setController(artistsCompanion);
             artists.setContent(fxmlLoader.load());
@@ -48,6 +61,10 @@ public class BrowseCompanion {
             fxmlLoader = new FXMLLoader(getClass().getResource("subBrowsers/table.fxml"));
             fxmlLoader.setController(tracksCompanion);
             tracks.setContent(fxmlLoader.load());
+
+            fxmlLoader = new FXMLLoader(getClass().getResource("player/player.fxml"));
+            fxmlLoader.setController(playerCompanion);
+            base.setBottom(fxmlLoader.load());
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -58,7 +75,7 @@ public class BrowseCompanion {
         Tab tab = albumTabs.get(album.getId());
 
         if (tab == null) {
-            AlbumDetailCompanion albumDetailCompanion = new AlbumDetailCompanion(new AlbumDetailModel(album, model));
+            AlbumDetailCompanion albumDetailCompanion = new AlbumDetailCompanion(this, new AlbumDetailModel(album, model));
 
             try {
                 FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("detail/detail.fxml"));
@@ -106,5 +123,10 @@ public class BrowseCompanion {
         } else {
             tabPane.getSelectionModel().select(tab);
         }
+    }
+
+    public void playSong(Track track){
+        model.playSong(track);
+        playerCompanion.playNow(track);
     }
 }

@@ -1,6 +1,7 @@
 package accentor.browser.detail.album;
 
 import accentor.Helper;
+import accentor.browser.BrowseCompanion;
 import accentor.browser.BrowseModel;
 import accentor.browser.detail.DetailCompanion;
 import accentor.browser.subBrowsers.tracks.TracksCompanion;
@@ -17,8 +18,11 @@ import java.io.IOException;
 import java.time.format.DateTimeFormatter;
 
 public class AlbumDetailCompanion extends DetailCompanion<AlbumDetailModel, Album> {
-    public AlbumDetailCompanion(AlbumDetailModel model){
+    private final BrowseCompanion superCompanion;
+
+    public AlbumDetailCompanion(BrowseCompanion superCompanion, AlbumDetailModel model){
         super(model);
+        this.superCompanion = superCompanion;
     }
 
     @FXML
@@ -31,7 +35,7 @@ public class AlbumDetailCompanion extends DetailCompanion<AlbumDetailModel, Albu
         info.getChildren().add(new Label(album.getRelease().format(DateTimeFormatter.ofPattern("dd/MM/yyyy"))));
         info.getChildren().add(new Label(Helper.getArtistsAlbum(album.getAlbumArtists())));
 
-        TracksCompanion tracksCompanion = new TracksCompanion(getModel().getTracksModel());
+        TracksCompanion tracksCompanion = new TracksCompanion(superCompanion, getModel().getTracksModel());
 
         try {
             FXMLLoader fxmlLoader;
@@ -39,7 +43,7 @@ public class AlbumDetailCompanion extends DetailCompanion<AlbumDetailModel, Albu
             fxmlLoader = new FXMLLoader(BrowseModel.class.getResource("subBrowsers/table.fxml"));
             fxmlLoader.setController(tracksCompanion);
             BorderPane pane = fxmlLoader.load();
-            tracksCompanion.setAlbumsVisible(false);
+            tracksCompanion.runAlbumDetailMode(true);
 
             VBox.setVgrow(pane, Priority.ALWAYS);// So that the table uses all available space
             details.getChildren().add(pane);

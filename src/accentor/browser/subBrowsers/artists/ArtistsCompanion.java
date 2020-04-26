@@ -18,11 +18,8 @@ public class ArtistsCompanion extends TableCompanion<ArtistsModel, Artist, Artis
     private TableColumn<Artist, String> picture = new TableColumn<>();
     private TableColumn<Artist, String> name  = new TableColumn<>();
 
-    private BrowseCompanion superCompanion;
-
     public ArtistsCompanion(BrowseCompanion superCompanion, ArtistsModel model) {
-        super(model);
-        this.superCompanion = superCompanion;
+        super(superCompanion, model);
 
         sortMap.put(name.getText(), ArtistFinder.SortOption.BY_NAME);
     }

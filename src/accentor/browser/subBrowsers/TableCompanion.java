@@ -1,5 +1,6 @@
 package accentor.browser.subBrowsers;
 
+import accentor.browser.BrowseCompanion;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -9,27 +10,23 @@ import javafx.scene.input.KeyCode;
 import java.util.HashMap;
 
 public abstract class TableCompanion<M extends TableModel<T, S>, T, S> {
-    @FXML
-    public TextField searchString;
-    @FXML
-    public Label pageNumber;
-    @FXML
-    public Button prev;
-    @FXML
-    public Button largePrev;
-    @FXML
-    public Button next;
-    @FXML
-    public Button largeNext;
+    @FXML public TextField searchString;
+    @FXML public Label pageNumber;
+    @FXML public Button prev;
+    @FXML public Button largePrev;
+    @FXML public Button next;
+    @FXML public Button largeNext;
     @FXML // I use a tableView to give the user the option to choose which columns are shown
     public TableView<T> table;
 
     // Needed to much to make these private
     protected M model;
     protected HashMap<String, S> sortMap = new HashMap<>();// Do not use getId since it results in unexpected sorting
+    protected BrowseCompanion superCompanion;
 
-    public TableCompanion(M model){
+    public TableCompanion(BrowseCompanion superCompanion, M model){
         this.model = model;
+        this.superCompanion = superCompanion;
     }
 
     @FXML

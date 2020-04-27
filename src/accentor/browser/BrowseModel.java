@@ -11,6 +11,7 @@ import accentor.domain.Track;
 import javafx.scene.control.Tab;
 
 import java.util.HashMap;
+import java.util.List;
 
 public class BrowseModel {
     private ArtistDAO artistDAO;
@@ -78,12 +79,14 @@ public class BrowseModel {
     }
 
     public Track findTrack(String id){
+        Track track = null;
         try {
-            return trackDAO.findById(id);
+            track = trackDAO.findById(id);
         } catch (DataAccessException e) {
             e.printStackTrace();
-            return null;
         }
+
+        return track;
     }
 
     public AlbumFinder getAlbums(Artist artist) {
@@ -112,5 +115,9 @@ public class BrowseModel {
 
     public void nextSong(Track track) {
         queueModel.setNext(track);
+    }
+
+    public void nextSongs(List<Track> tracks) {
+        queueModel.addListToPlaylist(tracks);
     }
 }

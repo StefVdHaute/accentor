@@ -8,13 +8,15 @@ import accentor.browser.subBrowsers.cells.NameListCellCompatible;
 import accentor.domain.Track;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public class QueueModel implements AlbumCellCompatible, NameListCellCompatible<Track.TrackArtist> {
     private BrowseModel superBrowser;
-    private Listener listener;
+    private List<Listener> listeners = new ArrayList<>();
     private List<Track> tracks = new ArrayList<>();
     private int playing = 0;
+    private Boolean repeat = false;
 
     public QueueModel(BrowseModel superBrowser) {
         this.superBrowser = superBrowser;
@@ -28,27 +30,27 @@ public class QueueModel implements AlbumCellCompatible, NameListCellCompatible<T
         playing = 0;
         tracks = new ArrayList<>();
         tracks.add(track);
-        listener.modelHasChanged();
+        fireModelChanged();
     }
 
     public void setNext(Track track) {
         tracks.add(1, track);
-        listener.modelHasChanged();
+        fireModelChanged();
     }
 
-    public void setNext(List<Track> newTracks) {
-        tracks.addAll(1, newTracks);
-        listener.modelHasChanged();
+    public void addListToPlaylist(List<Track> newTracks) {
+        tracks.addAll(newTracks);
+        fireModelChanged();
     }
 
     public void addToQueue(Track track) {
         tracks.add(track);
-        listener.modelHasChanged();
+        fireModelChanged();
     }
 
     public void addToQueue(List<Track> newTracks) {
         tracks.addAll(newTracks);
-        listener.modelHasChanged();
+        fireModelChanged();
     }
 
     @Override
@@ -61,25 +63,54 @@ public class QueueModel implements AlbumCellCompatible, NameListCellCompatible<T
         return superBrowser.findAlbum(id).getTitle();
     }
 
-    public void setListener(Listener listener) {
-        this.listener = listener;
+    public Track getCurrent() {
+        return tracks.get(playing);
     }
 
     public Track getNext() {
         Track track = null;
 
-        if (playing + 1 < tracks.size()) {
-            track = tracks.get(playing + 1);
+        if (playing + 1 < tracks.size() || repeat) {
+            track = tracks.get((playing + 1) % tracks.size());
         }
 
         return track;
     }
 
     public void incrementPlaying(int incremental) {
-        this.playing += incremental;
+        this.playing = (playing + incremental) % tracks.size();
     }
 
     public void setPlaying(int playing) {
         this.playing = playing;
+    }
+
+    public void setRepeat(Boolean repeat) {
+        this.repeat = repeat;
+    }
+
+    public void shuffle() {
+        Track currentTrack = tracks.get(playing);
+        Collections.shuffle(tracks);
+        playing = -1;
+
+        int i = 0;
+        while (i < tracks.size() && playing < 0) {
+            if (tracks.get(i) == currentTrack) {
+                playing = i;
+            }
+
+            i++;
+        }
+        fireModelChanged();
+    }
+    public void registerListener(Listener listener) {
+        listeners.add(listener);
+    }
+
+    private void fireModelChanged() {
+        for (Listener listener : listeners) {
+            listener.modelHasChanged();
+        }
     }
 }

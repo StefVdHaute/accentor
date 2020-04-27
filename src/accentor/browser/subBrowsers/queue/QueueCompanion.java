@@ -6,34 +6,34 @@ import accentor.browser.subBrowsers.cells.DurationCell;
 import accentor.browser.subBrowsers.cells.NameListCell;
 import accentor.domain.Track;
 import javafx.fxml.FXML;
+import javafx.scene.control.RadioButton;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.scene.media.Media;
-import javafx.scene.media.MediaPlayer;
 
 import java.util.List;
 
 public class QueueCompanion implements Listener {
-    @FXML
-    public TableView<Track> table;
+    @FXML public RadioButton repeatBtn;
+    @FXML public TableView<Track> table;
 
-    @FXML public TableColumn<Track, Integer> nr                     = new TableColumn<>("#");
-    @FXML public TableColumn<Track, String> title                   = new TableColumn<>("Title");
-    @FXML public TableColumn<Track, List<Track.TrackArtist>> artist = new TableColumn<>("Artist");
-    @FXML public TableColumn<Track, String> album                   = new TableColumn<>("Album");
-    @FXML public TableColumn<Track, Integer> length                 = new TableColumn<>("Time");
+    @FXML public TableColumn<Track, Integer> nr;
+    @FXML public TableColumn<Track, String> title;
+    @FXML public TableColumn<Track, List<Track.TrackArtist>> artist;
+    @FXML public TableColumn<Track, String> album;
+    @FXML public TableColumn<Track, Integer> length;
 
     private QueueModel model;
 
     public QueueCompanion(QueueModel model) {
         this.model = model;
-        model.setListener(this);
+        model.registerListener(this);
     }
 
     @FXML
     public void initialize(){
         //Setting cellValueFactory's
+        nr.setCellValueFactory( new PropertyValueFactory<>("number"));
         title.setCellValueFactory( new PropertyValueFactory<>("title"));
         artist.setCellValueFactory( new PropertyValueFactory<>("trackArtists"));
         album.setCellValueFactory( new PropertyValueFactory<>("albumId"));
@@ -44,6 +44,14 @@ public class QueueCompanion implements Listener {
         length.setCellFactory(column -> new DurationCell<>());
 
         table.getItems().addAll(model.getData());
+    }
+
+    public void setRepeat() {
+        model.setRepeat(repeatBtn.isSelected());
+    }
+
+    public void shuffle() {
+        model.shuffle();
     }
 
     @Override

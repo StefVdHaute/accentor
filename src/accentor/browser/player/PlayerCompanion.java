@@ -35,6 +35,7 @@ public class PlayerCompanion implements Listener {
     @FXML public ProgressBar bufferBar;
 
     private MediaPlayer mp;
+    private Track currentTrack;
     private MediaPlayer nextMp; //Used for preloading music
     private Track nextTrack;
 
@@ -45,6 +46,7 @@ public class PlayerCompanion implements Listener {
 
     public PlayerCompanion(QueueModel model) {
         this.model = model;
+        model.registerListener(this);
     }
 
     @FXML
@@ -71,13 +73,6 @@ public class PlayerCompanion implements Listener {
                 volumeEventPassed = System.currentTimeMillis();
             }
         });
-    }
-
-    @Override
-    public void modelHasChanged() {
-        if (nextTrack == null) {
-
-        }
     }
 
     public void setNext() {
@@ -169,6 +164,7 @@ public class PlayerCompanion implements Listener {
 
         songName.setText(track.getTitle());
         artistName.setText(Helper.getArtistsTrack(track.getTrackArtists()));
+        currentTrack = track;
 
         if (mp.getStatus() != MediaPlayer.Status.READY) {
             mp.setOnReady(() -> initPlayer(mp));
@@ -211,5 +207,15 @@ public class PlayerCompanion implements Listener {
         durationLabel.setText(String.format("%d:%02d", (int) (duration / 60), (int) (duration % 60)));
         timeSlider.setMax(duration);
         bufferBar.setProgress(0);
+    }
+
+
+    @Override
+    public void modelHasChanged() {
+        if (currentTrack != model.getCurrent()) {
+            playNow(model.getCurrent());
+        } else {
+            setNext();
+        }
     }
 }

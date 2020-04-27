@@ -1,22 +1,18 @@
 package accentor.browser.detail;
 
 import javafx.fxml.FXML;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.Tab;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.VBox;
 
 public abstract class DetailCompanion<M extends DetailModel<T>, T> {
-    @FXML
-    public Tab tab;
-    @FXML
-    public VBox details;
-    @FXML
-    public ImageView image;
-    @FXML
-    public VBox info;
-    @FXML
-    public Label title;
+    @FXML public Tab tab;
+    @FXML public VBox details;
+    @FXML public ImageView image;
+    @FXML public VBox info;
+    @FXML public Label title;
 
     private M model;
 
@@ -33,4 +29,6 @@ public abstract class DetailCompanion<M extends DetailModel<T>, T> {
     public M getModel() {
         return model;
     }
+
+    abstract public void addSongs();
 }

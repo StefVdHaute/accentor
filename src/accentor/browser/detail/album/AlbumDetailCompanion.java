@@ -8,6 +8,7 @@ import accentor.browser.subBrowsers.tracks.TracksCompanion;
 import accentor.domain.Album;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.layout.BorderPane;
@@ -27,7 +28,12 @@ public class AlbumDetailCompanion extends DetailCompanion<AlbumDetailModel, Albu
 
     @FXML
     public void initialize(){
-        Album album =getModel().getSubject();
+        Button addSongsBtn = new Button("Add all songs to playlist");
+        addSongsBtn.setOnAction(x -> addSongs());
+
+        details.getChildren().add(addSongsBtn);
+
+        Album album = getModel().getSubject();
 
         tab.setText(album.getTitle());
         title.setText(album.getTitle());
@@ -50,5 +56,9 @@ public class AlbumDetailCompanion extends DetailCompanion<AlbumDetailModel, Albu
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    public void addSongs() {
+        superCompanion.addSongsToPlaylist(getModel().getTracksModel().getAllData());
     }
 }

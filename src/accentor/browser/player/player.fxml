@@ -22,11 +22,9 @@
             <children>
                 <HBox alignment="CENTER" spacing="10.0">
                     <children>
-                        <Button mnemonicParsing="false" text="Shuffle" />
                         <Button mnemonicParsing="false" onAction="#goBack" text="|&lt;" />
                         <Button fx:id="playPauseBtn" mnemonicParsing="false" onAction="#handlePlayBtn" text="&gt;" />
                         <Button fx:id="nextBtn" disable="true" mnemonicParsing="false" onAction="#nextSong" text="&gt;|" />
-                        <Button mnemonicParsing="false" text="Repeat" />
                     </children>
                 </HBox>
                 <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">

@@ -20,6 +20,7 @@ import javafx.scene.layout.BorderPane;
 
 import java.io.IOException;
 import java.util.HashMap;
+import java.util.List;
 
 public class BrowseCompanion {
     @FXML public BorderPane base;
@@ -128,5 +129,9 @@ public class BrowseCompanion {
     public void playSong(Track track){
         model.playSong(track);
         playerCompanion.playNow(track);
+    }
+
+    public void addSongsToPlaylist(List<Track> tracks) {
+        model.nextSongs(tracks);
     }
 }

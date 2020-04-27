@@ -70,6 +70,23 @@ public class TracksModel
         return tracks;
     }
 
+    public List<Track> getAllData() {
+        List<Track> tracks = null;
+        TrackFinder tmpFinder = finder.setPerPage(Integer.MAX_VALUE);
+
+        try {
+            PaginatedResult<Track> result = tmpFinder.execute();
+            setPage(result.getCurrentPage());
+            setPages(result.getTotalPages());
+
+            tracks = result.getData();
+        } catch (DataAccessException e) {
+            e.printStackTrace();
+        }
+
+        return tracks;
+    }
+
     @Override
     public String getNames(List<Track.TrackArtist> ids){
         return Helper.getArtistsTrack(ids);

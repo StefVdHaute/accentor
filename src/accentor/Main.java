@@ -60,6 +60,7 @@ public class Main extends Application {
         BorderPane root = fxmlLoader.load();
         Scene scene = new Scene(root);
 
+        scene.getStylesheets().add("accentor/stylesheets/stylesheet.css");
         //.ico support would be nice :'(
         //This also doesn't seem to work properly with Docky on linux mint, Docky's fault?
         primaryStage.getIcons().add(new Image("accentor/images/rippoffyX256.png"));

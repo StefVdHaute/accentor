@@ -47,6 +47,7 @@ public class TracksCompanion extends TableCompanion<TracksModel, Track, TrackFin
         title.setSortable(false);
         artist.setSortable(false);
 
+        // Nothing i've tried works for proper time-placement
         length.setMinWidth(55);
         length.setMaxWidth(55);
         length.setResizable(false);

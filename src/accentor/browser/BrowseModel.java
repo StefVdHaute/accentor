@@ -113,6 +113,10 @@ public class BrowseModel {
         queueModel.setPlaying(track);
     }
 
+    public void playSong(int index) {
+        queueModel.setPlaying(index);
+    }
+
     public void nextSong(Track track) {
         queueModel.setNext(track);
     }

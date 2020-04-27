@@ -1,5 +1,6 @@
 package accentor.browser.subBrowsers.cells;
 
+import accentor.browser.PlaceHolderImageView;
 import javafx.geometry.Pos;
 import javafx.scene.control.TableCell;
 import javafx.scene.image.Image;
@@ -7,7 +8,14 @@ import javafx.scene.image.ImageView;
 
 public class PictureCell<T> extends TableCell<T, String> {
 
+    private Image placeholder;
+
     public PictureCell() {
+        setAlignment(Pos.CENTER);
+    }
+
+    public PictureCell(Image placeholder) {
+        this.placeholder = placeholder;
         setAlignment(Pos.CENTER);
     }
 
@@ -15,11 +23,33 @@ public class PictureCell<T> extends TableCell<T, String> {
     public void updateItem(String url, boolean empty){
         super.updateItem(url, empty);
 
-        if (empty || url == null) {
+        if (empty) {
             setText(null);
             setGraphic(null);
         } else {
-            setGraphic(new ImageView(new Image(url)));
+            Image image = null;
+
+            if (url != null) {
+                image = new Image(url, true);
+            }
+
+            ImageView imageView = new PlaceHolderImageView(image, placeholder);
+            setGraphic(imageView);
         }
     }
+
+    /*
+    @Override
+    public void updateItem(String url, boolean empty){
+        super.updateItem(url, empty);
+
+        if (empty) {
+            setText(null);
+            setGraphic(null);
+        } else {
+            ImageView imageView = new SlowImageView(url, placeholder);
+            setGraphic(imageView);
+        }
+    }
+    */
 }

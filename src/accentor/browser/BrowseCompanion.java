@@ -40,7 +40,7 @@ public class BrowseCompanion {
     @FXML
     public void initialize(){
         FXMLLoader fxmlLoader;
-        QueueCompanion queueCompanion = new QueueCompanion(model.getQueueModel());
+        QueueCompanion queueCompanion = new QueueCompanion(this, model.getQueueModel());
         ArtistsCompanion artistsCompanion = new ArtistsCompanion(this, model.getArtistsModel());
         AlbumsCompanion albumsCompanion = new AlbumsCompanion(this, model.getAlbumsModel());
         TracksCompanion tracksCompanion = new TracksCompanion(this, model.getTracksModel());
@@ -126,9 +126,22 @@ public class BrowseCompanion {
         }
     }
 
+    public void openTab(String id, boolean artist) {
+        if (artist) {
+            openTab(model.findArtist(id));
+        } else {
+            openTab(model.findAlbum(id));
+        }
+    }
+
     public void playSong(Track track){
         model.playSong(track);
         playerCompanion.playNow(track);
+    }
+
+    public void playSong(int index) {
+        model.playSong(index);
+        playerCompanion.playNow(index);
     }
 
     public void addSongsToPlaylist(List<Track> tracks) {

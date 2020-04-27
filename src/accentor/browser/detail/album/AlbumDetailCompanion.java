@@ -37,7 +37,7 @@ public class AlbumDetailCompanion extends DetailCompanion<AlbumDetailModel, Albu
 
         tab.setText(album.getTitle());
         title.setText(album.getTitle());
-        image.setImage(new Image(album.getLargeImageURL()));
+        image.setImage(new Image(album.getLargeImageURL(), true));
         info.getChildren().add(new Label(album.getRelease().format(DateTimeFormatter.ofPattern("dd/MM/yyyy"))));
         info.getChildren().add(new Label(Helper.getArtistsAlbum(album.getAlbumArtists())));
 

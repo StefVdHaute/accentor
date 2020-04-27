@@ -63,6 +63,10 @@ public class QueueModel implements AlbumCellCompatible, NameListCellCompatible<T
         return superBrowser.findAlbum(id).getTitle();
     }
 
+    public Track get(int index) {
+        return tracks.get(index);
+    }
+
     public Track getCurrent() {
         return tracks.get(playing);
     }
@@ -88,7 +92,6 @@ public class QueueModel implements AlbumCellCompatible, NameListCellCompatible<T
     public void setRepeat(Boolean repeat) {
         this.repeat = repeat;
     }
-
     public void shuffle() {
         Track currentTrack = tracks.get(playing);
         Collections.shuffle(tracks);
@@ -104,6 +107,7 @@ public class QueueModel implements AlbumCellCompatible, NameListCellCompatible<T
         }
         fireModelChanged();
     }
+
     public void registerListener(Listener listener) {
         listeners.add(listener);
     }

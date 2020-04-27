@@ -34,6 +34,16 @@ public class AlbumsCompanion extends TableCompanion<AlbumsModel, Album, AlbumFin
     @FXML
     public void initialize() {
         super.initialize();
+
+        table.getStyleClass().add("picture-table");
+        cover.visibleProperty().addListener(iv -> {
+            if (cover.isVisible()) {
+                table.getStyleClass().add("picture-table");
+            } else {
+                table.getStyleClass().remove("picture-table");
+            }
+        });
+
         table.getColumns().add(cover);
         table.getColumns().add(title);
         table.getColumns().add(artist);

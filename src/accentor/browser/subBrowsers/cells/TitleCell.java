@@ -1,12 +1,18 @@
 package accentor.browser.subBrowsers.cells;
 
+import accentor.browser.PlaceHolderImageView;
 import accentor.domain.Album;
 import javafx.scene.control.TableCell;
 import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 
-public class TitleCell extends TableCell<Album, String> {//Maybe for when pictures can be loaded in smoothly :')
+public class TitleCell extends TableCell<Album, String> {
+
+    private Image placeholder;
+
+    public TitleCell(Image placeholder) {
+        this.placeholder = placeholder;
+    }
 
     @Override
     public void updateItem(String title, boolean empty){
@@ -18,7 +24,12 @@ public class TitleCell extends TableCell<Album, String> {//Maybe for when pictur
         } else {
             setText("\t" + title);
             if (getTableRow().getItem().hasImage()) {
-                AnchorPane image = new AnchorPane(new ImageView(new Image(getTableRow().getItem().getSmallImageURL())));
+                AnchorPane image = new AnchorPane(
+                        new PlaceHolderImageView(
+                                new Image(getTableRow().getItem().getSmallImageURL(), true)
+                                , placeholder
+                        )
+                );
                 image.setPrefWidth(100);
 
                 setGraphic(image);

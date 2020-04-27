@@ -113,6 +113,10 @@ public class PlayerCompanion implements Listener {
         setNext();
     }
 
+    public void playNow(int index) {
+        playNow(model.get(index));
+    }
+
     ///////////////////////////////////////////////////ButtonFunctions//////////////////////////////////////////////////
     public void handlePlayBtn() {
         MediaPlayer.Status status = mp.getStatus();
@@ -145,11 +149,11 @@ public class PlayerCompanion implements Listener {
     }
 
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
     // Separated in order to remove time-interruption on volume-change
     private boolean volumeEventWithinLast(long t) {
         return (System.currentTimeMillis() - volumeEventPassed) <= t;
     }
+
     private boolean timeEventWithinLast(long t) {
         return (System.currentTimeMillis() - timeEventPassed) <= t;
     }
@@ -180,7 +184,7 @@ public class PlayerCompanion implements Listener {
             }
         });
 
-        volumeSlider.valueProperty().addListener(iv -> {//Lijkt niet te werken
+        volumeSlider.valueProperty().addListener(iv -> {
             if (volumeEventWithinLast(100)) {
                 mp.setVolume(volumeSlider.getValue());
             }

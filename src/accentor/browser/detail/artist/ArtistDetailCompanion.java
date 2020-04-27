@@ -36,7 +36,7 @@ public class ArtistDetailCompanion extends DetailCompanion<ArtistDetailModel, Ar
 
         tab.setText(artist.getName());
         title.setText(artist.getName());
-        image.setImage(new Image(artist.getLargeImageURL()));
+        image.setImage(new Image(artist.getLargeImageURL(), true));
 
         AlbumsCompanion albumsCompanion = new AlbumsCompanion(superCompanion, getModel().getAlbumsModel());
         TracksCompanion tracksCompanion = new TracksCompanion(superCompanion, getModel().getTracksModel());

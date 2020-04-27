@@ -12,6 +12,7 @@ import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableRow;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.image.Image;
 import javafx.scene.text.Font;
 
 public class ArtistsCompanion extends TableCompanion<ArtistsModel, Artist, ArtistFinder.SortOption> {
@@ -28,6 +29,15 @@ public class ArtistsCompanion extends TableCompanion<ArtistsModel, Artist, Artis
     public void initialize(){
         super.initialize();
 
+        table.getStyleClass().add("picture-table");
+        picture.visibleProperty().addListener(iv -> {
+            if (picture.isVisible()) {
+                table.getStyleClass().add("picture-table");
+            } else {
+                table.getStyleClass().remove("picture-table");
+            }
+        });
+
         table.getColumns().add(picture);
         table.getColumns().add(name);
 
@@ -39,7 +49,8 @@ public class ArtistsCompanion extends TableCompanion<ArtistsModel, Artist, Artis
         picture.setCellValueFactory( new PropertyValueFactory<>("smallImageURL"));
         name.setCellValueFactory( new PropertyValueFactory<>("name"));
 
-        picture.setCellFactory(column -> new PictureCell<>());
+        Image placeholder = new Image("accentor/images/artist_placeholder.png");
+        picture.setCellFactory(column -> new PictureCell<>(placeholder));
         name.setCellFactory(column -> {
             TableCell<Artist, String> cell = new TableCell<>() {
                 @Override

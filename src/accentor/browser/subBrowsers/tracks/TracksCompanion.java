@@ -8,9 +8,12 @@ import accentor.browser.subBrowsers.cells.DurationCell;
 import accentor.browser.subBrowsers.cells.NameListCell;
 import accentor.domain.Track;
 import javafx.fxml.FXML;
+import javafx.scene.control.ContextMenu;
+import javafx.scene.control.MenuItem;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableRow;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.input.MouseButton;
 
 import java.util.List;
 
@@ -66,7 +69,16 @@ public class TracksCompanion extends TableCompanion<TracksModel, Track, TrackFin
 
         table.setRowFactory(column -> {
             TableRow<Track> row = new TableRow<>();
-            row.setOnMouseClicked(event -> play(row.getItem()));
+            row.setOnMouseClicked(event -> {
+                if (row.getItem() != null) {
+                    if (event.getButton() == MouseButton.SECONDARY) {
+                        showContextMenu(row);
+                    } else if (event.getButton() == MouseButton.PRIMARY) {
+                        play(row.getItem());
+                    }
+                }
+            });
+
             return row;
         });
 
@@ -76,13 +88,52 @@ public class TracksCompanion extends TableCompanion<TracksModel, Track, TrackFin
         updateLabel();
     }
 
+    private void showContextMenu(TableRow<Track> row) {
+        ContextMenu contextMenu = new ContextMenu();
+
+        MenuItem nowBtn = new MenuItem("Play song now");
+        nowBtn.setOnAction(x -> play(row.getItem()));
+
+        MenuItem nextBtn = new MenuItem("Play song next");
+        nextBtn.setOnAction(x -> playNext(row.getItem()));
+
+        MenuItem addBtn  = new MenuItem("Add song to playlist");
+        addBtn.setOnAction(x -> add(row.getItem()));
+
+        MenuItem artistBtn = new MenuItem("Show artist");
+        artistBtn.setOnAction(x -> {
+            for (Track.TrackArtist trackArtist : row.getItem().getTrackArtists()) {
+                openTab(trackArtist.getArtistId(), true);
+            }
+        });
+
+        MenuItem albumBtn  = new MenuItem("Show album");
+        albumBtn.setOnAction(x -> openTab(row.getItem().getAlbumId(), false));
+
+
+        contextMenu.getItems().addAll(nowBtn, nextBtn, addBtn, artistBtn, albumBtn);
+        row.setContextMenu(contextMenu);
+    }
+
     public void runAlbumDetailMode(boolean yes){//TODO: kies betere namen
         album.setVisible(!yes);
     }
 
-    private void play(Track track){
-        if (track != null) {
-            superCompanion.playSong(track);
+    private void openTab(String id, boolean isArtist) {
+        if (id != null && !id.isEmpty()) {
+            superCompanion.openTab(id, isArtist);
         }
+    }
+
+    private void play(Track track){
+        superCompanion.playSong(track);
+    }
+
+    private void playNext(Track track) {
+        superCompanion.nextSong(track);
+    }
+
+    private void add(Track track) {
+        superCompanion.addToQueueEnd(track);
     }
 }

@@ -109,6 +109,7 @@ public class BrowseModel {
         return albumTabs;
     }
 
+    ////////////////////////////////Queue manipulation//////////////////////////////////////////////////////////////////
     public void playSong(Track track){
         queueModel.setPlaying(track);
     }
@@ -117,11 +118,23 @@ public class BrowseModel {
         queueModel.setPlaying(index);
     }
 
-    public void nextSong(Track track) {
-        queueModel.setNext(track);
+    public void playSong(List<Track> tracks) {
+        queueModel.setPlaying(tracks);
     }
 
-    public void nextSongs(List<Track> tracks) {
-        queueModel.addListToPlaylist(tracks);
+    public void nextSong(Track track) {
+        queueModel.addToNext(track);
+    }
+
+    public void nextSong(List<Track> tracks) {
+        queueModel.addToNext(tracks);
+    }
+
+    public void addToQueueEnd(Track track) {
+        queueModel.addToEnd(track);
+    }
+
+    public void addToQueueEnd(List<Track> tracks) {
+        queueModel.addToEnd(tracks);
     }
 }

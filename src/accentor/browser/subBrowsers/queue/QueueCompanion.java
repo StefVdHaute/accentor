@@ -70,6 +70,7 @@ public class QueueCompanion implements Listener {
         MenuItem artistBtn = new MenuItem("Show artist");
         MenuItem albumBtn  = new MenuItem("Show album");
 
+        removeBtn.setOnAction(x -> remove(row.getIndex()));
         artistBtn.setOnAction(x -> {
             for (Track.TrackArtist trackArtist : row.getItem().getTrackArtists()) {
                 openTab(trackArtist.getArtistId(), true);
@@ -79,6 +80,10 @@ public class QueueCompanion implements Listener {
 
         contextMenu.getItems().addAll(removeBtn, artistBtn, albumBtn);
         row.setContextMenu(contextMenu);
+    }
+
+    private void remove(int track) {
+        model.removeSong(track);
     }
 
     private void play(int index) {

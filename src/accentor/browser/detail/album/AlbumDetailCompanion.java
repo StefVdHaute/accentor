@@ -9,6 +9,7 @@ import accentor.domain.Album;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Button;
+import javafx.scene.control.ButtonBar;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.layout.BorderPane;
@@ -28,10 +29,19 @@ public class AlbumDetailCompanion extends DetailCompanion<AlbumDetailModel, Albu
 
     @FXML
     public void initialize(){
-        Button addSongsBtn = new Button("Add all songs to playlist");
+        ButtonBar playlistBtns = new ButtonBar();
+
+        Button playSongsBtn = new Button("Play all songs now");
+        playSongsBtn.setOnAction(x -> playSongs());
+
+        Button nextSongsBtn = new Button("Play all songs next");
+        nextSongsBtn.setOnAction(x -> playSongsNext());
+
+        Button addSongsBtn = new Button("Add all songs to your playlist");
         addSongsBtn.setOnAction(x -> addSongs());
 
-        details.getChildren().add(addSongsBtn);
+        playlistBtns.getButtons().addAll(playSongsBtn, nextSongsBtn, addSongsBtn);
+        details.getChildren().add(playlistBtns);
 
         Album album = getModel().getSubject();
 
@@ -58,7 +68,15 @@ public class AlbumDetailCompanion extends DetailCompanion<AlbumDetailModel, Albu
         }
     }
 
+    public void playSongs() {
+        superCompanion.playSong(getModel().getTracksModel().getAllData());
+    }
+
+    public void playSongsNext() {
+        superCompanion.nextSong(getModel().getTracksModel().getAllData());
+    }
+
     public void addSongs() {
-        superCompanion.addSongsToPlaylist(getModel().getTracksModel().getAllData());
+        superCompanion.addToQueueEnd(getModel().getTracksModel().getAllData());
     }
 }

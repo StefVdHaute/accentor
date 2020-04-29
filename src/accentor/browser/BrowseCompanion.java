@@ -47,21 +47,21 @@ public class BrowseCompanion {
         this.playerCompanion = new PlayerCompanion(model.getQueueModel());
 
         try {
-            fxmlLoader = new FXMLLoader(getClass().getResource("subBrowsers/queue/queue.fxml"));
-            fxmlLoader.setController(queueCompanion);
-            queue.setContent(fxmlLoader.load());
+            fxmlLoader = new FXMLLoader(getClass().getResource("subBrowsers/table.fxml"));
+            fxmlLoader.setController(albumsCompanion);
+            albums.setContent(fxmlLoader.load());
 
             fxmlLoader = new FXMLLoader(getClass().getResource("subBrowsers/table.fxml"));
             fxmlLoader.setController(artistsCompanion);
             artists.setContent(fxmlLoader.load());
 
             fxmlLoader = new FXMLLoader(getClass().getResource("subBrowsers/table.fxml"));
-            fxmlLoader.setController(albumsCompanion);
-            albums.setContent(fxmlLoader.load());
-
-            fxmlLoader = new FXMLLoader(getClass().getResource("subBrowsers/table.fxml"));
             fxmlLoader.setController(tracksCompanion);
             tracks.setContent(fxmlLoader.load());
+
+            fxmlLoader = new FXMLLoader(getClass().getResource("subBrowsers/queue/queue.fxml"));
+            fxmlLoader.setController(queueCompanion);
+            queue.setContent(fxmlLoader.load());
 
             fxmlLoader = new FXMLLoader(getClass().getResource("player/player.fxml"));
             fxmlLoader.setController(playerCompanion);
@@ -134,17 +134,32 @@ public class BrowseCompanion {
         }
     }
 
+    ////////////////////////////////Queue manipulation//////////////////////////////////////////////////////////////////
     public void playSong(Track track){
         model.playSong(track);
-        playerCompanion.playNow(track);
     }
 
     public void playSong(int index) {
         model.playSong(index);
-        playerCompanion.playNow(index);
     }
 
-    public void addSongsToPlaylist(List<Track> tracks) {
-        model.nextSongs(tracks);
+    public void playSong(List<Track> tracks) {
+        model.playSong(tracks);
+    }
+
+    public void nextSong(Track track) {
+        model.nextSong(track);
+    }
+
+    public void nextSong(List<Track> tracks) {
+        model.nextSong(tracks);
+    }
+
+    public void addToQueueEnd(Track track) {
+        model.addToQueueEnd(track);
+    }
+
+    public void addToQueueEnd(List<Track> tracks) {
+        model.addToQueueEnd(tracks);
     }
 }

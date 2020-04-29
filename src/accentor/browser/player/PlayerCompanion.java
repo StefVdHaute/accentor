@@ -81,21 +81,12 @@ public class PlayerCompanion implements Listener {
         if (nextTrack != null) {
             nextMp = new MediaPlayer(new Media(nextTrack.getAudioUrl()));
             nextMp.setAutoPlay(false);
-
             mp.setOnEndOfMedia(this::nextSong);
             nextBtn.setDisable(false);
         } else {
             nextBtn.setDisable(true);
             mp.setOnEndOfMedia(() -> {
-                mp.dispose();
-                player.setDisable(true);
-
-                timeSlider.setValue(0);
-                bufferBar.setProgress(INDETERMINATE_PROGRESS);
-                time.setText("");
-                durationLabel.setText("");
-                songName.setText("");
-                artistName.setText("");
+                emptyMode();
             });
         }
     }
@@ -213,11 +204,34 @@ public class PlayerCompanion implements Listener {
         bufferBar.setProgress(0);
     }
 
+    private void emptyMode() {
+        if (mp != null) {
+            mp.dispose();
+        }
+        if (nextMp != null) {
+            nextMp.dispose();
+        }
+
+        player.setDisable(true);
+
+        timeSlider.setValue(0);
+        bufferBar.setProgress(INDETERMINATE_PROGRESS);
+        time.setText("");
+        durationLabel.setText("");
+        songName.setText("");
+        artistName.setText("");
+    }
 
     @Override
     public void modelHasChanged() {
-        if (currentTrack != model.getCurrent()) {
-            playNow(model.getCurrent());
+        Track newCurrent = model.getCurrent();
+
+        if (currentTrack != newCurrent) {
+            if (newCurrent != null) {
+                playNow(model.getCurrent());
+            } else {
+                emptyMode();
+            }
         } else {
             setNext();
         }

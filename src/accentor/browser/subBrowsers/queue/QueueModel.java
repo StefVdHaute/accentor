@@ -26,6 +26,26 @@ public class QueueModel implements AlbumCellCompatible, NameListCellCompatible<T
         return tracks;
     }
 
+    /////////////////////////////////////////////Queue-removals/////////////////////////////////////////////////////////
+    public void removeSong(int track) {
+        if (track < playing) {
+            playing --;
+        }
+
+        tracks.remove(track);
+        fireModelChanged();
+    }
+
+    public void removeSong(Track track) {
+        if (tracks.indexOf(track) < playing) {
+            playing --;
+        }
+
+        tracks.remove(track);
+        fireModelChanged();
+    }
+
+    ////////////////////////////////////////////Queue-additions/////////////////////////////////////////////////////////
     public void setPlaying(Track track) {
         playing = 0;
         tracks = new ArrayList<>();
@@ -33,25 +53,43 @@ public class QueueModel implements AlbumCellCompatible, NameListCellCompatible<T
         fireModelChanged();
     }
 
-    public void setNext(Track track) {
-        tracks.add(1, track);
+    public void setPlaying(List<Track> newTracks) {
+        playing = 0;
+        tracks = new ArrayList<>(newTracks);
         fireModelChanged();
     }
 
-    public void addListToPlaylist(List<Track> newTracks) {
-        tracks.addAll(newTracks);
+    public void addToNext(Track track) {
+        if (tracks.contains(track)) {
+            removeSong(track);
+        }
+
+        tracks.add(playing + 1, track);
         fireModelChanged();
     }
 
-    public void addToQueue(Track track) {
-        tracks.add(track);
+    public void addToNext(List<Track> newTracks) {
+        int i = 1;
+        for (Track track: newTracks) {
+            tracks.add(playing + i, track);
+        }
+
         fireModelChanged();
     }
 
-    public void addToQueue(List<Track> newTracks) {
-        tracks.addAll(newTracks);
+    public void addToEnd(Track track) {
+        if (! tracks.contains(track)) {
+            tracks.add(track);
+        }
+
         fireModelChanged();
     }
+    public void addToEnd(List<Track> newTracks) {
+        for (Track track: newTracks) {
+            addToEnd(track);
+        }
+    }
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
     @Override
     public String getNames(List<Track.TrackArtist> ids) {
@@ -68,7 +106,12 @@ public class QueueModel implements AlbumCellCompatible, NameListCellCompatible<T
     }
 
     public Track getCurrent() {
-        return tracks.get(playing);
+        Track track = null;
+
+        if (playing < tracks.size()) {
+            track = tracks.get(playing);
+        }
+        return track;
     }
 
     public Track getNext() {
@@ -92,6 +135,7 @@ public class QueueModel implements AlbumCellCompatible, NameListCellCompatible<T
     public void setRepeat(Boolean repeat) {
         this.repeat = repeat;
     }
+
     public void shuffle() {
         Track currentTrack = tracks.get(playing);
         Collections.shuffle(tracks);

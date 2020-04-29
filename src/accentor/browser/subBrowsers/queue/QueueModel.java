@@ -69,12 +69,15 @@ public class QueueModel implements AlbumCellCompatible, NameListCellCompatible<T
     }
 
     public void addToNext(List<Track> newTracks) {
-        int i = 1;
-        for (Track track: newTracks) {
-            tracks.add(playing + i, track);
-        }
+        if (tracks.size() >= 1) {
+            int i = 1;
+            for (Track track : newTracks) {
+                tracks.add(playing + i, track);
+            }
 
-        fireModelChanged();
+            fireModelChanged();
+        }
+        else setPlaying(newTracks);
     }
 
     public void addToEnd(Track track) {
@@ -149,6 +152,14 @@ public class QueueModel implements AlbumCellCompatible, NameListCellCompatible<T
 
             i++;
         }
+        fireModelChanged();
+    }
+
+    public void reorder(int draggedIndex, int dropIndex) {
+        Track draggedTrack = tracks.get(draggedIndex);
+        removeSong(draggedIndex);
+
+        tracks.add(dropIndex, draggedTrack);
         fireModelChanged();
     }
 

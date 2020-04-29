@@ -6,13 +6,10 @@
    <center>
       <TabPane fx:id="tabPane" tabClosingPolicy="ALL_TABS" tabDragPolicy="REORDER">
         <tabs>
+            <Tab fx:id="artists" closable="false" text="Artists"/>
+            <Tab fx:id="albums" closable="false" text="Albums"/>
+            <Tab fx:id="tracks" closable="false" text="Tracks"/>
             <Tab fx:id="queue" closable="false" text="Queue" />
-            <Tab fx:id="artists" closable="false" text="Artists">
-            </Tab>
-            <Tab fx:id="albums" closable="false" text="Albums">
-            </Tab>
-            <Tab fx:id="tracks" closable="false" text="Tracks">
-            </Tab>
         </tabs>
       </TabPane>
    </center>

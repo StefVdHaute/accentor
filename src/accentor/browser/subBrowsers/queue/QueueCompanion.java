@@ -6,10 +6,15 @@ import accentor.browser.subBrowsers.cells.AlbumCell;
 import accentor.browser.subBrowsers.cells.DurationCell;
 import accentor.browser.subBrowsers.cells.NameListCell;
 import accentor.domain.Track;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
+import javafx.scene.SnapshotParameters;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.scene.input.MouseButton;
+import javafx.scene.image.Image;
+import javafx.scene.input.*;
+import javafx.scene.layout.Background;
+import javafx.scene.paint.Color;
 
 import java.util.List;
 
@@ -23,8 +28,11 @@ public class QueueCompanion implements Listener {
     @FXML public TableColumn<Track, String> album;
     @FXML public TableColumn<Track, Integer> length;
 
-    private BrowseCompanion superCompanion;
-    private QueueModel model;
+    public static DataFormat CUSTOM_TRACK = new DataFormat("custom/track");
+
+
+    private final BrowseCompanion superCompanion;
+    private final QueueModel model;
 
     public QueueCompanion(BrowseCompanion superCompanion, QueueModel model) {
         this.superCompanion = superCompanion;
@@ -51,16 +59,52 @@ public class QueueCompanion implements Listener {
                 if (row.getItem() != null) {
                     if (event.getButton() == MouseButton.SECONDARY) {
                         showContextMenu(row);
-                    } else if (event.getButton() == MouseButton.PRIMARY){
-                            play(row.getIndex());
+                    } else if (event.getButton() == MouseButton.PRIMARY) {
+                        play(row.getIndex());
                     }
                 }
+            });
+
+            row.setOnDragDetected(event -> {
+                if (!row.isEmpty()) {
+                    Dragboard db = row.startDragAndDrop(TransferMode.COPY_OR_MOVE);
+                    ClipboardContent content = new ClipboardContent();
+                    content.putString(Integer.toString(row.getIndex()));
+                    db.setContent(content);
+                    event.consume();
+                }
+            });
+
+            row.setOnDragEntered(event -> {
+                event.acceptTransferModes(TransferMode.COPY_OR_MOVE);
+                row.getStyleClass().add("drag-entered");
+                event.consume();
+            });
+
+            row.setOnDragOver(event -> {
+                event.acceptTransferModes(TransferMode.COPY_OR_MOVE);
+                event.consume();
+            });
+
+            row.setOnDragExited(event -> {
+                event.acceptTransferModes(TransferMode.COPY_OR_MOVE);
+                row.getStyleClass().remove("drag-entered");
+                event.consume();
+            });
+
+            row.setOnDragDropped(event -> {
+                Dragboard db = event.getDragboard();
+
+                model.reorder(Integer.parseInt(db.getString()), row.getIndex());
+
+                event.setDropCompleted(true);
+                event.consume();
             });
 
             return row;
         });
 
-        table.getItems().addAll(model.getData());
+            table.getItems().addAll(model.getData());
     }
 
     private void showContextMenu(TableRow<Track> row) {

@@ -2,6 +2,7 @@ package accentor.browser.subBrowsers;
 
 import accentor.Listener;
 import accentor.browser.BrowseCompanion;
+import javafx.application.Platform;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -9,6 +10,7 @@ import javafx.scene.control.*;
 import javafx.scene.input.KeyCode;
 
 import java.util.HashMap;
+import java.util.List;
 
 public abstract class TableCompanion<M extends TableModel<T, S>, T, S> implements Listener {
     @FXML public TextField searchString;
@@ -73,11 +75,7 @@ public abstract class TableCompanion<M extends TableModel<T, S>, T, S> implement
 
     protected void changePage(int increment) {
         model.changePage(increment);
-        table.getItems().clear();
-        table.getItems().addAll(model.getData());
-
-        updateLabel();
-        updateButtons(model.getPage(), model.getPages());
+        renewData();
     }
 
     protected void updateButtons(int pageNr, int pages) {
@@ -99,13 +97,22 @@ public abstract class TableCompanion<M extends TableModel<T, S>, T, S> implement
     }
 
     protected void renewData() {
-        table.getItems().clear();
-        table.getItems().addAll(model.getData());
+        table.getStyleableParent().getStyleClass().add("loading");
+        new Thread(() -> {
+            List<T> data = model.getData();
+            Platform.runLater(() -> {
+                table.getItems().clear();
+                table.getItems().addAll(data);
+                table.getStyleableParent().getStyleClass().remove("loading");
+            });
+        }).start();
     }
 
     @Override
     public void modelHasChanged(){
-        updateLabel();
-        updateButtons(model.getPage(), model.getPages());
+        Platform.runLater(() -> {
+            updateLabel();
+            updateButtons(model.getPage(), model.getPages());
+        });
     }
 }

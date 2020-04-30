@@ -5,3 +5,7 @@
 .drag-entered {
     -fx-background-color: cornflowerblue;
 }
+
+.loading {
+    -fx-cursor: wait;
+}

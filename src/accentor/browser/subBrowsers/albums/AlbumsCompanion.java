@@ -9,6 +9,7 @@ import accentor.specialistFxElements.cells.PictureCell;
 import accentor.domain.Album;
 
 import accentor.specialistFxElements.columns.PictureColumn;
+import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.geometry.Pos;
 import javafx.scene.control.TableCell;
@@ -85,8 +86,11 @@ public class AlbumsCompanion extends TableCompanion<AlbumsModel, Album, AlbumFin
         table.setRowFactory(column -> {
             TableRow<Album> row = new TableRow<>();
             row.setOnMouseClicked(event -> {
-                table.getScene().getStylesheets().add("accentor/stylesheets/wait.css");
-                new Thread(() -> openTab(row.getItem())).start();
+                table.getStyleableParent().getStyleClass().add("loading");
+                new Thread(() -> {
+                    openTab(row.getItem());
+                    Platform.runLater(() -> table.getStyleableParent().getStyleClass().remove("loading"));
+                }).start();
                 event.consume();
             });
             row.addEventFilter(KeyEvent.KEY_RELEASED, keyEvent -> {

@@ -7,6 +7,7 @@ import accentor.specialistFxElements.cells.AlbumCell;
 import accentor.specialistFxElements.cells.DurationCell;
 import accentor.specialistFxElements.cells.NameListCell;
 import accentor.domain.Track;
+import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.scene.control.ContextMenu;
 import javafx.scene.control.MenuItem;
@@ -110,16 +111,24 @@ public class TracksCompanion extends TableCompanion<TracksModel, Track, TrackFin
         MenuItem artistBtn = new MenuItem("Show artist");
         artistBtn.setOnAction(actionEvent -> {
             for (Track.TrackArtist trackArtist : row.getItem().getTrackArtists()) {
-                table.getScene().getStylesheets().add("accentor/stylesheets/wait.css");
-                new Thread(() -> openTab(trackArtist.getArtistId(), true)).start();
+                table.getStyleableParent().getStyleClass().add("loading");
+                new Thread(() -> {
+                    openTab(trackArtist.getArtistId(), true);
+                    table.getStyleableParent().getStyleClass().remove("loading");
+                }).start();
             }
             actionEvent.consume();
         });
 
         MenuItem albumBtn  = new MenuItem("Show album");
         albumBtn.setOnAction(actionEvent -> {
-            table.getScene().getStylesheets().add("accentor/stylesheets/wait.css");
-            new Thread(() -> openTab(row.getItem().getAlbumId(), false)).start();
+            table.getStyleableParent().getStyleClass().add("loading");
+            new Thread(() -> {
+                openTab(row.getItem().getAlbumId(), false);
+                Platform.runLater(() -> {
+                    table.getStyleableParent().getStyleClass().remove("loading");
+                });
+            }).start();
             actionEvent.consume();
         });
 

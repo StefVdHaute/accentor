@@ -110,7 +110,6 @@ public class BrowseCompanion {
                         tabPane.getTabs().add(newTab);
                         tabPane.getSelectionModel().selectLast();
                     }
-                    tabPane.getScene().getStylesheets().remove("accentor/stylesheets/wait.css");
                 });
             } catch (IOException e) {
                 e.printStackTrace();
@@ -142,7 +141,6 @@ public class BrowseCompanion {
                         tabPane.getTabs().add(newTab);
                         tabPane.getSelectionModel().selectLast();
                     }
-                    tabPane.getScene().getStylesheets().remove("accentor/stylesheets/wait.css");
                 });
 
             } catch (IOException e) {

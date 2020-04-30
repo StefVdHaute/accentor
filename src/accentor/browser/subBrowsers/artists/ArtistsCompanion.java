@@ -3,10 +3,9 @@ package accentor.browser.subBrowsers.artists;
 import accentor.api.ArtistFinder;
 import accentor.browser.BrowseCompanion;
 import accentor.browser.subBrowsers.TableCompanion;
+import accentor.domain.Artist;
 import accentor.specialistFxElements.cells.PictureCell;
 import accentor.specialistFxElements.columns.PictureColumn;
-import accentor.domain.Artist;
-
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.geometry.Pos;
@@ -46,7 +45,7 @@ public class ArtistsCompanion extends TableCompanion<ArtistsModel, Artist, Artis
         picture.setCellValueFactory( new PropertyValueFactory<>("smallImageURL"));
         name.setCellValueFactory( new PropertyValueFactory<>("name"));
 
-        Image placeholder = new Image("accentor/images/artist_placeholder.png");
+        Image placeholder = new Image("accentor/images/artist_placeholder_small.png");
         picture.setCellFactory(column -> new PictureCell<>(placeholder));
         name.setCellFactory(column -> {
             TableCell<Artist, String> cell = new TableCell<>() {

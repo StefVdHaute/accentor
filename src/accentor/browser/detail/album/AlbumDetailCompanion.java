@@ -6,14 +6,17 @@ import accentor.browser.BrowseModel;
 import accentor.browser.detail.DetailCompanion;
 import accentor.browser.subBrowsers.tracks.TracksCompanion;
 import accentor.domain.Album;
+import accentor.specialistFxElements.PlaceHolderImageView;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonBar;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.Priority;
+import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 
 import java.io.IOException;
@@ -29,6 +32,27 @@ public class AlbumDetailCompanion extends DetailCompanion<AlbumDetailModel, Albu
 
     @FXML
     public void initialize(){
+        Album album = getModel().getSubject();
+
+        Image albumImage = null;
+
+        if (album.hasImage()) {
+            albumImage = new Image(album.getMediumImageURL(), true);
+        }
+
+        //For consistent image-holder size
+        StackPane imagePane = new StackPane(new PlaceHolderImageView(
+                albumImage,
+                new Image("accentor/images/album_placeholder_medium.png")
+        ));
+        imagePane.setAlignment(Pos.CENTER);
+        imagePane.setMinWidth(260);
+        imagePane.setMaxWidth(260);
+        imagePane.setMinHeight(260);
+        imagePane.setMaxHeight(260);
+
+        topview.getChildren().add(0, imagePane);
+
         //Threading the buttonFunctions in order to add a loading cursor is not worth the effort
         ButtonBar playlistBtns = new ButtonBar();
 
@@ -44,11 +68,8 @@ public class AlbumDetailCompanion extends DetailCompanion<AlbumDetailModel, Albu
         playlistBtns.getButtons().addAll(playSongsBtn, nextSongsBtn, addSongsBtn);
         details.getChildren().add(playlistBtns);
 
-        Album album = getModel().getSubject();
-
         tab.setText(album.getTitle());
         title.setText(album.getTitle());
-        image.setImage(new Image(album.getLargeImageURL(), true));
         info.getChildren().add(new Label(album.getRelease().format(DateTimeFormatter.ofPattern("dd/MM/yyyy"))));
         info.getChildren().add(new Label(Helper.getArtistsAlbum(album.getAlbumArtists())));
 

@@ -1,16 +1,15 @@
 package accentor.browser.detail;
 
 import javafx.fxml.FXML;
-import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.Tab;
-import javafx.scene.image.ImageView;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 
 public abstract class DetailCompanion<M extends DetailModel<T>, T> {
     @FXML public Tab tab;
+    @FXML public HBox topview;
     @FXML public VBox details;
-    @FXML public ImageView image;
     @FXML public VBox info;
     @FXML public Label title;
 

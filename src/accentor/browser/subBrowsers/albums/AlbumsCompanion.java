@@ -3,11 +3,10 @@ package accentor.browser.subBrowsers.albums;
 import accentor.api.AlbumFinder;
 import accentor.browser.BrowseCompanion;
 import accentor.browser.subBrowsers.TableCompanion;
+import accentor.domain.Album;
 import accentor.specialistFxElements.cells.DateCell;
 import accentor.specialistFxElements.cells.NameListCell;
 import accentor.specialistFxElements.cells.PictureCell;
-import accentor.domain.Album;
-
 import accentor.specialistFxElements.columns.PictureColumn;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
@@ -16,6 +15,7 @@ import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableRow;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.image.Image;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 
@@ -62,7 +62,8 @@ public class AlbumsCompanion extends TableCompanion<AlbumsModel, Album, AlbumFin
         artist.setCellValueFactory( new PropertyValueFactory<>("albumArtists"));
         release.setCellValueFactory( new PropertyValueFactory<>("release"));
 
-        cover.setCellFactory(column -> new PictureCell<>());
+        Image placeholder = new Image("accentor/images/album_placeholder_small.png");
+        cover.setCellFactory(column -> new PictureCell<>(placeholder));
         //title.setCellFactory(column -> new TitleCell());
         title.setCellFactory(column -> {
             TableCell<Album, String> cell = new TableCell<>() {

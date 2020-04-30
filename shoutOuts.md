@@ -9,3 +9,7 @@ en door te zetten ondanks mijn hoge eisen.
 Musician by Gan Khoon Lay from the Noun Project.
 The original work has been modified.
 
+### album_placeholder
+
+Music album by Aldric Rodríguez from the Noun Project
+The original work has been modified.

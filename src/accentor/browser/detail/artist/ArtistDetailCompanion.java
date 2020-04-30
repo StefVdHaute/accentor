@@ -6,14 +6,16 @@ import accentor.browser.detail.DetailCompanion;
 import accentor.browser.subBrowsers.albums.AlbumsCompanion;
 import accentor.browser.subBrowsers.tracks.TracksCompanion;
 import accentor.domain.Artist;
-
+import accentor.specialistFxElements.PlaceHolderImageView;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonBar;
 import javafx.scene.image.Image;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.Priority;
+import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 
 import java.io.IOException;
@@ -28,6 +30,27 @@ public class ArtistDetailCompanion extends DetailCompanion<ArtistDetailModel, Ar
 
     @FXML
     public void initialize(){
+        Artist artist = getModel().getSubject();
+
+        Image artistImage = null;
+
+        if (artist.hasImage()) {
+            artistImage = new Image(artist.getMediumImageURL(), true);
+        }
+
+        //For consistent image-holder size
+        StackPane imagePane = new StackPane(new PlaceHolderImageView(
+                artistImage,
+                new Image("accentor/images/artist_placeholder_medium.png")
+        ));
+        imagePane.setAlignment(Pos.CENTER);
+        imagePane.setMinWidth(260);
+        imagePane.setMaxWidth(260);
+        imagePane.setMinHeight(260);
+        imagePane.setMaxHeight(260);
+
+        topview.getChildren().add(0, imagePane);
+
         ButtonBar playlistBtns = new ButtonBar();
 
         Button playSongsBtn = new Button("Play all songs now");
@@ -42,11 +65,8 @@ public class ArtistDetailCompanion extends DetailCompanion<ArtistDetailModel, Ar
         playlistBtns.getButtons().addAll(playSongsBtn, nextSongsBtn, addSongsBtn);
         details.getChildren().add(playlistBtns);
 
-        Artist artist = getModel().getSubject();
-
         tab.setText(artist.getName());
         title.setText(artist.getName());
-        image.setImage(new Image(artist.getLargeImageURL(), true));
 
         AlbumsCompanion albumsCompanion = new AlbumsCompanion(superCompanion, getModel().getAlbumsModel());
         TracksCompanion tracksCompanion = new TracksCompanion(superCompanion, getModel().getTracksModel());

@@ -48,6 +48,12 @@ public class TracksModel extends TableModel<Track, TrackFinder.SortOption>
     }
 
     @Override
+    public void resetPage() {
+        super.resetPage();
+        finder = finder.setPage(getPage());
+    }
+
+    @Override
     public List<Track> getData() {
         List<Track> tracks;
 
@@ -66,6 +72,7 @@ public class TracksModel extends TableModel<Track, TrackFinder.SortOption>
             setPages(1);
         }
 
+        fireModelHasChanged();
         return tracks;
     }
 

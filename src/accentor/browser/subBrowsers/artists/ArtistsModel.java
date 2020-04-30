@@ -38,6 +38,11 @@ public class ArtistsModel extends TableModel<Artist, ArtistFinder.SortOption> {
         finder = finder.setPage(getPage());
     }
 
+    @Override
+    public void resetPage() {
+        super.resetPage();
+        finder = finder.setPage(getPage());
+    }
 
     @Override
     public List<Artist> getData() {
@@ -58,6 +63,7 @@ public class ArtistsModel extends TableModel<Artist, ArtistFinder.SortOption> {
             setPages(1);
         }
 
+        fireModelHasChanged();
         return artists;
     }
 }

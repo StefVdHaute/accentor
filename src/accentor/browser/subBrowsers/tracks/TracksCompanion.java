@@ -92,7 +92,7 @@ public class TracksCompanion extends TableCompanion<TracksModel, Track, TrackFin
             return row;
         });
 
-        modelHasChanged();
+        renewData();
     }
 
     private void showContextMenu(TableRow<Track> row) {

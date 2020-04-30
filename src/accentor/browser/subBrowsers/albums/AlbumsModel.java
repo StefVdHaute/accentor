@@ -43,6 +43,12 @@ public class AlbumsModel extends TableModel<Album, AlbumFinder.SortOption> imple
         finder = finder.setPage(getPage());
     }
 
+    @Override
+    public void resetPage() {
+        super.resetPage();
+        finder = finder.setPage(getPage());
+    }
+
     @Override //TODO: load pictures in cache with a task for quick access
     public List<Album> getData() {
         List<Album> albums;
@@ -62,6 +68,7 @@ public class AlbumsModel extends TableModel<Album, AlbumFinder.SortOption> imple
             setPages(1);
         }
 
+        fireModelHasChanged();
         return albums;
     }
 

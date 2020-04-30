@@ -20,6 +20,10 @@ public abstract class TableModel<T, S> {
         page += increment;
     }
 
+    public void resetPage() {
+        page = 1;
+    }
+
     public int getPage() {
         return page;
     }

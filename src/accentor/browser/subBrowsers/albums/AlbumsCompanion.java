@@ -99,7 +99,7 @@ public class AlbumsCompanion extends TableCompanion<AlbumsModel, Album, AlbumFin
             return row;
         });
 
-        modelHasChanged();
+        renewData();
     }
 
     private void openTab(Album album) {

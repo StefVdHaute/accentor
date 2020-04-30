@@ -81,7 +81,7 @@ public class ArtistsCompanion extends TableCompanion<ArtistsModel, Artist, Artis
             return row;
         });
 
-        modelHasChanged();
+        renewData();
     }
 
     private void openTab(Artist artist) {

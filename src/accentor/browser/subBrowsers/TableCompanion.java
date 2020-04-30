@@ -54,7 +54,8 @@ public abstract class TableCompanion<M extends TableModel<T, S>, T, S> implement
                 boolean ascending = columns.get(0).getSortType() == TableColumn.SortType.ASCENDING;
 
                 model.setSort(sortMap.get(sortOn), ascending);
-                modelHasChanged();
+                model.resetPage();
+                renewData();
             }
 
             return true;
@@ -67,7 +68,7 @@ public abstract class TableCompanion<M extends TableModel<T, S>, T, S> implement
         model.resetToOGFinder();
         model.setFilter(searchString.getText());
 
-        modelHasChanged();
+        renewData();
     }
 
     protected void changePage(int increment) {
@@ -97,11 +98,13 @@ public abstract class TableCompanion<M extends TableModel<T, S>, T, S> implement
         pageNumber.setText(model.getPage() + "/" + model.getPages());
     }
 
-    @Override
-    public void modelHasChanged(){
+    protected void renewData() {
         table.getItems().clear();
         table.getItems().addAll(model.getData());
+    }
 
+    @Override
+    public void modelHasChanged(){
         updateLabel();
         updateButtons(model.getPage(), model.getPages());
     }

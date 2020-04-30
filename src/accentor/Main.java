@@ -25,8 +25,7 @@ public class Main extends Application {
     @Override
     public void init() {
         List<String> argList = getParameters().getRaw();
-
-        String propertiesPath = "accentor.properties";
+        String propertiesPath = "resources/accentor/accentor.properties";
 
         if (!argList.isEmpty()){
             propertiesPath = argList.get(0);

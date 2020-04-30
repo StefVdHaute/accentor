@@ -26,8 +26,7 @@
                 <TableColumn fx:id="title" prefWidth="75.0" sortable="false" text="Title"/>
                 <TableColumn fx:id="artist" prefWidth="75.0" sortable="false" text="Artist"/>
                 <TableColumn fx:id="album" prefWidth="75.0" sortable="false" text="Album"/>
-                <TableColumn fx:id="length" maxWidth="55.0" minWidth="55.0" resizable="false" sortable="false"
-                             text="Time"/>
+                <TableColumn fx:id="length" maxWidth="55.0" minWidth="55.0" resizable="false" sortable="false"/>
             </columns>
         </TableView>
     </center>

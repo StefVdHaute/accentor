@@ -35,6 +35,14 @@ public class QueueCompanion implements Listener {
 
     @FXML
     public void initialize(){
+        //Changing column widths
+        nr.setMinWidth(20);
+        nr.setMaxWidth(30);
+
+        // Nothing i've tried works for proper length-placement
+        length.setMinWidth(90);
+        length.setMaxWidth(90);
+
         //Setting cellValueFactory's
         nr.setCellValueFactory( new PropertyValueFactory<>("number"));
         title.setCellValueFactory( new PropertyValueFactory<>("title"));

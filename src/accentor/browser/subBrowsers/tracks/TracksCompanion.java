@@ -25,7 +25,7 @@ public class TracksCompanion extends TableCompanion<TracksModel, Track, TrackFin
     private final TableColumn<Track, String> title                   = new TableColumn<>("Title");
     private final TableColumn<Track, List<Track.TrackArtist>> artist = new TableColumn<>("Artist");
     private final TableColumn<Track, String> album                   = new TableColumn<>("Album");
-    private final TableColumn<Track, Integer> length                 = new TableColumn<>("Time");
+    private final TableColumn<Track, Integer> length                 = new TableColumn<>();
     
     public TracksCompanion(BrowseCompanion superCompanion, TracksModel model) {
         super(superCompanion, model);
@@ -53,9 +53,9 @@ public class TracksCompanion extends TableCompanion<TracksModel, Track, TrackFin
         title.setSortable(false);
         artist.setSortable(false);
 
-        // Nothing i've tried works for proper time-placement
-        length.setMinWidth(55);
-        length.setMaxWidth(55);
+        // Nothing i've tried works for proper length-placement
+        length.setMinWidth(85);
+        length.setMaxWidth(85);
         length.setResizable(false);
         length.setSortable(false);
 

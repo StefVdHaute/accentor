@@ -111,24 +111,14 @@ public class TracksCompanion extends TableCompanion<TracksModel, Track, TrackFin
         MenuItem artistBtn = new MenuItem("Show artist");
         artistBtn.setOnAction(actionEvent -> {
             for (Track.TrackArtist trackArtist : row.getItem().getTrackArtists()) {
-                table.getStyleableParent().getStyleClass().add("loading");
-                new Thread(() -> {
-                    openTab(trackArtist.getArtistId(), true);
-                    table.getStyleableParent().getStyleClass().remove("loading");
-                }).start();
+                Platform.runLater(() -> openTab(trackArtist.getArtistId(), true));
             }
             actionEvent.consume();
         });
 
         MenuItem albumBtn  = new MenuItem("Show album");
         albumBtn.setOnAction(actionEvent -> {
-            table.getStyleableParent().getStyleClass().add("loading");
-            new Thread(() -> {
-                openTab(row.getItem().getAlbumId(), false);
-                Platform.runLater(() -> {
-                    table.getStyleableParent().getStyleClass().remove("loading");
-                });
-            }).start();
+            Platform.runLater(() -> openTab(row.getItem().getAlbumId(), false));
             actionEvent.consume();
         });
 

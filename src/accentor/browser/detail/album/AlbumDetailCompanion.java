@@ -29,6 +29,7 @@ public class AlbumDetailCompanion extends DetailCompanion<AlbumDetailModel, Albu
 
     @FXML
     public void initialize(){
+        //Threading the buttonFunctions in order to add a loading cursor is not worth the effort
         ButtonBar playlistBtns = new ButtonBar();
 
         Button playSongsBtn = new Button("Play all songs now");

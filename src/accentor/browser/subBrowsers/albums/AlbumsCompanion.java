@@ -87,15 +87,12 @@ public class AlbumsCompanion extends TableCompanion<AlbumsModel, Album, AlbumFin
             TableRow<Album> row = new TableRow<>();
             row.setOnMouseClicked(event -> {
                 table.getStyleableParent().getStyleClass().add("loading");
-                new Thread(() -> {
-                    openTab(row.getItem());
-                    Platform.runLater(() -> table.getStyleableParent().getStyleClass().remove("loading"));
-                }).start();
+                Platform.runLater(() -> openTab(row.getItem()));
                 event.consume();
             });
             row.addEventFilter(KeyEvent.KEY_RELEASED, keyEvent -> {
                 if (keyEvent.getCode() == KeyCode.ENTER) {
-                    openTab(row.getItem());
+                    Platform.runLater(() -> openTab(row.getItem()));
                     keyEvent.consume();
                 }
             });

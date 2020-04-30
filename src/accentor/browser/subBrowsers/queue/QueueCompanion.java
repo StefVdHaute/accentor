@@ -7,6 +7,7 @@ import accentor.specialistFxElements.cells.DurationCell;
 import accentor.specialistFxElements.cells.NameListCell;
 import accentor.domain.Track;
 import javafx.fxml.FXML;
+import javafx.scene.Cursor;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.*;
@@ -47,6 +48,10 @@ public class QueueCompanion implements Listener {
 
         table.setRowFactory(column -> {
             TableRow<Track> row = new TableRow<>();
+            if (! row.isEmpty()) {
+                row.cursorProperty().setValue(Cursor.HAND);
+            }
+
             row.setOnMouseClicked(event -> {
                 if (row.getItem() != null) {
                     if (event.getButton() == MouseButton.SECONDARY) {
@@ -64,6 +69,8 @@ public class QueueCompanion implements Listener {
 
             row.setOnDragDetected(event -> {
                 if (!row.isEmpty()) {
+                    row.setCursor(Cursor.CLOSED_HAND);
+
                     Dragboard db = row.startDragAndDrop(TransferMode.COPY_OR_MOVE);
                     ClipboardContent content = new ClipboardContent();
                     content.putString(Integer.toString(row.getIndex()));
@@ -90,9 +97,15 @@ public class QueueCompanion implements Listener {
             });
 
             row.setOnDragDropped(event -> {
+                row.setCursor(Cursor.HAND);
                 Dragboard db = event.getDragboard();
 
-                model.reorder(Integer.parseInt(db.getString()), row.getIndex());
+                int pos = row.getIndex();
+                if (row.isEmpty()) {
+                    pos = table.getItems().size() - 1;
+                }
+
+                model.reorder(Integer.parseInt(db.getString()), pos);
 
                 event.setDropCompleted(true);
                 event.consume();

@@ -3,9 +3,9 @@ package accentor.browser.subBrowsers.tracks;
 import accentor.api.TrackFinder;
 import accentor.browser.BrowseCompanion;
 import accentor.browser.subBrowsers.TableCompanion;
-import accentor.browser.subBrowsers.cells.AlbumCell;
-import accentor.browser.subBrowsers.cells.DurationCell;
-import accentor.browser.subBrowsers.cells.NameListCell;
+import accentor.specialistFxElements.cells.AlbumCell;
+import accentor.specialistFxElements.cells.DurationCell;
+import accentor.specialistFxElements.cells.NameListCell;
 import accentor.domain.Track;
 import javafx.fxml.FXML;
 import javafx.scene.control.ContextMenu;
@@ -13,16 +13,18 @@ import javafx.scene.control.MenuItem;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableRow;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseButton;
 
 import java.util.List;
 
 public class TracksCompanion extends TableCompanion<TracksModel, Track, TrackFinder.SortOption> {
-    private TableColumn<Track, Integer> nr                     = new TableColumn<>("#");
-    private TableColumn<Track, String> title                   = new TableColumn<>("Title");
-    private TableColumn<Track, List<Track.TrackArtist>> artist = new TableColumn<>("Artist");
-    private TableColumn<Track, String> album                   = new TableColumn<>("Album");
-    private TableColumn<Track, Integer> length                 = new TableColumn<>("Time");
+    private final TableColumn<Track, Integer> nr                     = new TableColumn<>("#");
+    private final TableColumn<Track, String> title                   = new TableColumn<>("Title");
+    private final TableColumn<Track, List<Track.TrackArtist>> artist = new TableColumn<>("Artist");
+    private final TableColumn<Track, String> album                   = new TableColumn<>("Album");
+    private final TableColumn<Track, Integer> length                 = new TableColumn<>("Time");
     
     public TracksCompanion(BrowseCompanion superCompanion, TracksModel model) {
         super(superCompanion, model);
@@ -73,19 +75,24 @@ public class TracksCompanion extends TableCompanion<TracksModel, Track, TrackFin
                 if (row.getItem() != null) {
                     if (event.getButton() == MouseButton.SECONDARY) {
                         showContextMenu(row);
+                        event.consume();
                     } else if (event.getButton() == MouseButton.PRIMARY) {
                         play(row.getItem());
+                        event.consume();
                     }
+                }
+            });
+            row.addEventFilter(KeyEvent.KEY_RELEASED, keyEvent -> {
+                if (keyEvent.getCode() == KeyCode.ENTER) {
+                    play(row.getItem());
+                    keyEvent.consume();
                 }
             });
 
             return row;
         });
 
-        table.getItems().addAll(model.getData());
-
-        updateButtons(1, model.getPages());
-        updateLabel();
+        modelHasChanged();
     }
 
     private void showContextMenu(TableRow<Track> row) {
@@ -101,21 +108,27 @@ public class TracksCompanion extends TableCompanion<TracksModel, Track, TrackFin
         addBtn.setOnAction(x -> add(row.getItem()));
 
         MenuItem artistBtn = new MenuItem("Show artist");
-        artistBtn.setOnAction(x -> {
+        artistBtn.setOnAction(actionEvent -> {
             for (Track.TrackArtist trackArtist : row.getItem().getTrackArtists()) {
-                openTab(trackArtist.getArtistId(), true);
+                table.getScene().getStylesheets().add("accentor/stylesheets/wait.css");
+                new Thread(() -> openTab(trackArtist.getArtistId(), true)).start();
             }
+            actionEvent.consume();
         });
 
         MenuItem albumBtn  = new MenuItem("Show album");
-        albumBtn.setOnAction(x -> openTab(row.getItem().getAlbumId(), false));
+        albumBtn.setOnAction(actionEvent -> {
+            table.getScene().getStylesheets().add("accentor/stylesheets/wait.css");
+            new Thread(() -> openTab(row.getItem().getAlbumId(), false)).start();
+            actionEvent.consume();
+        });
 
 
         contextMenu.getItems().addAll(nowBtn, nextBtn, addBtn, artistBtn, albumBtn);
         row.setContextMenu(contextMenu);
     }
 
-    public void runAlbumDetailMode(boolean yes){//TODO: kies betere namen
+    public void runAlbumDetailMode(boolean yes) {
         album.setVisible(!yes);
     }
 
@@ -125,7 +138,7 @@ public class TracksCompanion extends TableCompanion<TracksModel, Track, TrackFin
         }
     }
 
-    private void play(Track track){
+    private void play(Track track) {
         superCompanion.playSong(track);
     }
 

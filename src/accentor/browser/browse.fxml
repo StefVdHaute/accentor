@@ -4,13 +4,11 @@
 <?import javafx.scene.layout.BorderPane?>
 <BorderPane fx:id="base" minHeight="400.0" minWidth="560.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1">
    <center>
-      <TabPane fx:id="tabPane" tabClosingPolicy="ALL_TABS" tabDragPolicy="REORDER">
-        <tabs>
-            <Tab fx:id="artists" closable="false" text="Artists"/>
-            <Tab fx:id="albums" closable="false" text="Albums"/>
-            <Tab fx:id="tracks" closable="false" text="Tracks"/>
-            <Tab fx:id="queue" closable="false" text="Queue" />
-        </tabs>
-      </TabPane>
+       <TabPane fx:id="tabPane" tabClosingPolicy="ALL_TABS" tabDragPolicy="REORDER">
+           <Tab fx:id="artists" closable="false" text="Artists"/>
+           <Tab fx:id="albums" closable="false" text="Albums"/>
+           <Tab fx:id="tracks" closable="false" text="Tracks"/>
+           <Tab fx:id="queue" closable="false" text="Queue"/>
+       </TabPane>
    </center>
 </BorderPane>

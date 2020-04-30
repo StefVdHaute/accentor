@@ -1,4 +1,4 @@
-package accentor.browser.subBrowsers.cells;
+package accentor.specialistFxElements.cells;
 
 import javafx.scene.control.TableCell;
 

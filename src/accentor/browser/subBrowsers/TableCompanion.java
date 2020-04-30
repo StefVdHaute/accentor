@@ -1,5 +1,6 @@
 package accentor.browser.subBrowsers;
 
+import accentor.Listener;
 import accentor.browser.BrowseCompanion;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -9,7 +10,7 @@ import javafx.scene.input.KeyCode;
 
 import java.util.HashMap;
 
-public abstract class TableCompanion<M extends TableModel<T, S>, T, S> {
+public abstract class TableCompanion<M extends TableModel<T, S>, T, S> implements Listener {
     @FXML public TextField searchString;
     @FXML public Label pageNumber;
     @FXML public Button prev;
@@ -27,6 +28,7 @@ public abstract class TableCompanion<M extends TableModel<T, S>, T, S> {
     public TableCompanion(BrowseCompanion superCompanion, M model){
         this.model = model;
         this.superCompanion = superCompanion;
+        model.setListener(this);
     }
 
     @FXML
@@ -40,6 +42,7 @@ public abstract class TableCompanion<M extends TableModel<T, S>, T, S> {
         searchString.setOnKeyPressed(event -> {
             if(event.getCode().equals(KeyCode.ENTER)) {
                 search();
+                event.consume();
             }
         });
 
@@ -51,7 +54,7 @@ public abstract class TableCompanion<M extends TableModel<T, S>, T, S> {
                 boolean ascending = columns.get(0).getSortType() == TableColumn.SortType.ASCENDING;
 
                 model.setSort(sortMap.get(sortOn), ascending);
-                refreshData();
+                modelHasChanged();
             }
 
             return true;
@@ -64,7 +67,7 @@ public abstract class TableCompanion<M extends TableModel<T, S>, T, S> {
         model.resetToOGFinder();
         model.setFilter(searchString.getText());
 
-        refreshData();
+        modelHasChanged();
     }
 
     protected void changePage(int increment) {
@@ -94,7 +97,8 @@ public abstract class TableCompanion<M extends TableModel<T, S>, T, S> {
         pageNumber.setText(model.getPage() + "/" + model.getPages());
     }
 
-    public void refreshData(){
+    @Override
+    public void modelHasChanged(){
         table.getItems().clear();
         table.getItems().addAll(model.getData());
 

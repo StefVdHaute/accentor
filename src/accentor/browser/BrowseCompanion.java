@@ -12,10 +12,13 @@ import accentor.browser.subBrowsers.tracks.TracksCompanion;
 import accentor.domain.Album;
 import accentor.domain.Artist;
 import accentor.domain.Track;
+import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
+import javafx.scene.control.Tooltip;
+import javafx.scene.input.KeyCode;
 import javafx.scene.layout.BorderPane;
 
 import java.io.IOException;
@@ -30,12 +33,15 @@ public class BrowseCompanion {
     @FXML public Tab albums;
     @FXML public Tab tracks;
 
-    private BrowseModel model;
-    private PlayerCompanion playerCompanion;
+    private final BrowseModel model;
+
+    //Tooltip not properly working (on linux mint 19.3)
+    private final Tooltip closeTip = new Tooltip("alt+F4");
 
     public BrowseCompanion(BrowseModel model){
         this.model = model;
     }
+
 
     @FXML
     public void initialize(){
@@ -44,7 +50,7 @@ public class BrowseCompanion {
         ArtistsCompanion artistsCompanion = new ArtistsCompanion(this, model.getArtistsModel());
         AlbumsCompanion albumsCompanion = new AlbumsCompanion(this, model.getAlbumsModel());
         TracksCompanion tracksCompanion = new TracksCompanion(this, model.getTracksModel());
-        this.playerCompanion = new PlayerCompanion(model.getQueueModel());
+        PlayerCompanion playerCompanion = new PlayerCompanion(model.getQueueModel());
 
         try {
             fxmlLoader = new FXMLLoader(getClass().getResource("subBrowsers/table.fxml"));
@@ -69,11 +75,23 @@ public class BrowseCompanion {
         } catch (IOException e) {
             e.printStackTrace();
         }
+
+        tabPane.setOnKeyReleased(keyEvent -> {
+            if (keyEvent.getCode() == KeyCode.F4 && keyEvent.isControlDown()) {
+                Tab selected = tabPane.getSelectionModel().getSelectedItem();
+
+                if (selected.isClosable()) {
+                    tabPane.getTabs().remove(selected);
+                    keyEvent.consume();
+                }
+            }
+        });
     }
 
     public void openTab(Album album) {
         HashMap<String, Tab> albumTabs = model.getAlbumTabs();
-        Tab tab = albumTabs.get(album.getId());
+        String albumId = album.getId();
+        Tab tab = albumTabs.get(albumId);
 
         if (tab == null) {
             AlbumDetailCompanion albumDetailCompanion = new AlbumDetailCompanion(this, new AlbumDetailModel(album, model));
@@ -83,13 +101,17 @@ public class BrowseCompanion {
                 fxmlLoader.setController(albumDetailCompanion);
                 Tab newTab = fxmlLoader.load();
 
-                albumTabs.put(album.getId(), newTab);
 
                 newTab.setOnClosed(e -> albumTabs.remove(album.getId()));
 
-                tabPane.getTabs().add(newTab);
-
-                tabPane.getSelectionModel().selectLast();
+                Platform.runLater(() -> {
+                    if (albumTabs.get(albumId) == null) {
+                        albumTabs.put(albumId, newTab);
+                        tabPane.getTabs().add(newTab);
+                        tabPane.getSelectionModel().selectLast();
+                    }
+                    tabPane.getScene().getStylesheets().remove("accentor/stylesheets/wait.css");
+                });
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -100,7 +122,8 @@ public class BrowseCompanion {
 
     public void openTab(Artist artist) {
         HashMap<String, Tab> artistTabs = model.getArtistTabs();
-        Tab tab = artistTabs.get(artist.getId());
+        String artistId = artist.getId();
+        Tab tab = artistTabs.get(artistId);
 
         if (tab == null) {
             ArtistDetailCompanion artistDetailCompanion
@@ -111,13 +134,17 @@ public class BrowseCompanion {
                 fxmlLoader.setController(artistDetailCompanion);
                 Tab newTab = fxmlLoader.load();
 
-                artistTabs.put(artist.getId(), newTab);
-
                 newTab.setOnClosed(e -> artistTabs.remove(artist.getId()));
 
-                tabPane.getTabs().add(newTab);
+                Platform.runLater(() -> {
+                    if (artistTabs.get(artistId) == null) {
+                        artistTabs.put(artistId, newTab);
+                        tabPane.getTabs().add(newTab);
+                        tabPane.getSelectionModel().selectLast();
+                    }
+                    tabPane.getScene().getStylesheets().remove("accentor/stylesheets/wait.css");
+                });
 
-                tabPane.getSelectionModel().selectLast();
             } catch (IOException e) {
                 e.printStackTrace();
             }

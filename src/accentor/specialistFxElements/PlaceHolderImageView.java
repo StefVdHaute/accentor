@@ -1,4 +1,4 @@
-package accentor.browser;
+package accentor.specialistFxElements;
 
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;

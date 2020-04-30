@@ -6,14 +6,14 @@ import accentor.api.DataAccessException;
 import accentor.api.PaginatedResult;
 import accentor.api.SortDirection;
 import accentor.browser.subBrowsers.TableModel;
-import accentor.browser.subBrowsers.cells.NameListCellCompatible;
+import accentor.specialistFxElements.cells.NameListCellCompatible;
 import accentor.domain.Album;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class AlbumsModel extends TableModel<Album, AlbumFinder.SortOption> implements NameListCellCompatible<Album.AlbumArtist> {
-    private AlbumFinder ogFinder;
+    private final AlbumFinder ogFinder;
     private AlbumFinder finder;
 
     public AlbumsModel(AlbumFinder finder) {

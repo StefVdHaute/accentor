@@ -6,7 +6,7 @@ import accentor.browser.subBrowsers.tracks.TracksModel;
 import accentor.domain.Album;
 
 public class AlbumDetailModel extends DetailModel<Album> {
-    private TracksModel tracksModel;
+    private final TracksModel tracksModel;
 
     public AlbumDetailModel(Album album, BrowseModel browseModel){
         super(album, browseModel);

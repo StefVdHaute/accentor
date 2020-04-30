@@ -14,7 +14,7 @@ public abstract class DetailCompanion<M extends DetailModel<T>, T> {
     @FXML public VBox info;
     @FXML public Label title;
 
-    private M model;
+    private final M model;
 
     public DetailCompanion(M model){
         this.model = model;

@@ -1,4 +1,4 @@
-package accentor.browser.subBrowsers.cells;
+package accentor.specialistFxElements.cells;
 
 import javafx.geometry.Pos;
 import javafx.scene.control.TableCell;
@@ -6,7 +6,7 @@ import javafx.scene.control.TableCell;
 import java.util.List;
 
 public class NameListCell<T, A> extends TableCell<T, List<A>> {
-    private NameListCellCompatible<A> model;
+    private final NameListCellCompatible<A> model;
 
     public NameListCell(NameListCellCompatible<A> model){
         super();

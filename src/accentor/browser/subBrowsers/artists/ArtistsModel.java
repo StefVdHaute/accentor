@@ -8,7 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ArtistsModel extends TableModel<Artist, ArtistFinder.SortOption> {
-    private ArtistFinder ogFinder;
+    private final ArtistFinder ogFinder;
     private ArtistFinder finder;
 
     public ArtistsModel(ArtistFinder finder) {

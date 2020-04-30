@@ -3,8 +3,8 @@ package accentor.browser.subBrowsers.queue;
 import accentor.Helper;
 import accentor.Listener;
 import accentor.browser.BrowseModel;
-import accentor.browser.subBrowsers.cells.AlbumCellCompatible;
-import accentor.browser.subBrowsers.cells.NameListCellCompatible;
+import accentor.specialistFxElements.cells.AlbumCellCompatible;
+import accentor.specialistFxElements.cells.NameListCellCompatible;
 import accentor.domain.Track;
 
 import java.util.ArrayList;
@@ -12,8 +12,8 @@ import java.util.Collections;
 import java.util.List;
 
 public class QueueModel implements AlbumCellCompatible, NameListCellCompatible<Track.TrackArtist> {
-    private BrowseModel superBrowser;
-    private List<Listener> listeners = new ArrayList<>();
+    private final BrowseModel superBrowser;
+    private final List<Listener> listeners = new ArrayList<>();
     private List<Track> tracks = new ArrayList<>();
     private int playing = 0;
     private Boolean repeat = false;
@@ -41,11 +41,16 @@ public class QueueModel implements AlbumCellCompatible, NameListCellCompatible<T
             playing --;
         }
 
-        tracks.remove(track);
+        removeFromTracks(track);
         fireModelChanged();
     }
 
     ////////////////////////////////////////////Queue-additions/////////////////////////////////////////////////////////
+    public void setPlaying(int playing) {
+        this.playing = playing;
+        fireModelChanged();
+    }
+
     public void setPlaying(Track track) {
         playing = 0;
         tracks = new ArrayList<>();
@@ -60,24 +65,31 @@ public class QueueModel implements AlbumCellCompatible, NameListCellCompatible<T
     }
 
     public void addToNext(Track track) {
-        if (tracks.contains(track)) {
-            removeSong(track);
-        }
+        if (tracks.size() >= 1) {
+            if (tracks.contains(track)) {
+                removeSong(track);
+            }
 
-        tracks.add(playing + 1, track);
-        fireModelChanged();
+            tracks.add(playing + 1, track);
+            fireModelChanged();
+        } else {
+            setPlaying(track);
+        }
     }
 
     public void addToNext(List<Track> newTracks) {
         if (tracks.size() >= 1) {
             int i = 1;
             for (Track track : newTracks) {
+                removeFromTracks(track);
                 tracks.add(playing + i, track);
             }
 
             fireModelChanged();
         }
-        else setPlaying(newTracks);
+        else {
+            setPlaying(newTracks);
+        }
     }
 
     public void addToEnd(Track track) {
@@ -131,12 +143,9 @@ public class QueueModel implements AlbumCellCompatible, NameListCellCompatible<T
         this.playing = (playing + incremental) % tracks.size();
     }
 
-    public void setPlaying(int playing) {
-        this.playing = playing;
-    }
-
     public void setRepeat(Boolean repeat) {
         this.repeat = repeat;
+        fireModelChanged();
     }
 
     public void shuffle() {
@@ -161,6 +170,16 @@ public class QueueModel implements AlbumCellCompatible, NameListCellCompatible<T
 
         tracks.add(dropIndex, draggedTrack);
         fireModelChanged();
+    }
+
+    public void removeFromTracks(Track track) {
+        track.getId();
+        for (int i = 0; i < tracks.size(); i++) {
+            if (tracks.get(i).getId().equals(track.getId())) {
+                tracks.remove(i);
+                i--;
+            }
+        }
     }
 
     public void registerListener(Listener listener) {

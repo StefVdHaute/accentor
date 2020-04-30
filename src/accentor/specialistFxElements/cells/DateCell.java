@@ -1,4 +1,4 @@
-package accentor.browser.subBrowsers.cells;
+package accentor.specialistFxElements.cells;
 
 import javafx.geometry.Pos;
 import javafx.scene.control.TableCell;
@@ -11,7 +11,7 @@ public class DateCell<T> extends TableCell<T, LocalDate> {
     public DateCell(){
         super();
         setAlignment(Pos.CENTER);
-    };
+    }
 
     @Override
     public void updateItem(LocalDate date, boolean empty){

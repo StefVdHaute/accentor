@@ -4,9 +4,9 @@ import accentor.Helper;
 import accentor.Listener;
 import accentor.browser.subBrowsers.queue.QueueModel;
 import accentor.domain.Track;
-
 import javafx.beans.value.ObservableValue;
 import javafx.fxml.FXML;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ProgressBar;
@@ -18,7 +18,10 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
+import javafx.stage.Window;
 import javafx.util.Duration;
+
+import java.util.HashMap;
 
 import static javafx.scene.control.ProgressIndicator.INDETERMINATE_PROGRESS;
 
@@ -43,6 +46,15 @@ public class PlayerCompanion implements Listener {
 
     private long volumeEventPassed = 0;
     private long timeEventPassed = 0;
+
+    private final HashMap<KeyCode, Runnable> keyCommands = new HashMap<>();
+    {
+        //TODO: MEDIA-KEYS do not work
+        keyCommands.put(KeyCode.SPACE, this::handlePlayBtn);
+        keyCommands.put(KeyCode.PAUSE, this::handlePlayBtn);
+        keyCommands.put(KeyCode.TRACK_NEXT, this::nextSong);
+        keyCommands.put(KeyCode.TRACK_PREV, this::goBack);
+    }
 
     public PlayerCompanion(QueueModel model) {
         this.model = model;
@@ -73,6 +85,25 @@ public class PlayerCompanion implements Listener {
                 volumeEventPassed = System.currentTimeMillis();
             }
         });
+
+        player.sceneProperty().addListener((ObservableValue<? extends Scene> observable, Scene oldScene, Scene newScene) -> {
+            if (newScene != null) {
+                newScene.setOnKeyReleased(keyEvent -> keyCommands.getOrDefault(keyEvent.getCode(), () -> {} ).run());
+
+                newScene.windowProperty().addListener(
+                        (ObservableValue<? extends Window> wObservable, Window oldWindow, Window newWindow) -> {
+                            newWindow.setOnCloseRequest(windowEvent -> {
+                                if (mp != null) {
+                                    mp.dispose();
+                                }
+
+                                if (nextMp != null) {
+                                    nextMp.dispose();
+                                }
+                            });
+                        });
+            }
+        });
     }
 
     public void setNext() {
@@ -85,9 +116,7 @@ public class PlayerCompanion implements Listener {
             nextBtn.setDisable(false);
         } else {
             nextBtn.setDisable(true);
-            mp.setOnEndOfMedia(() -> {
-                emptyMode();
-            });
+            mp.setOnEndOfMedia(this::emptyMode);
         }
     }
 
@@ -102,10 +131,6 @@ public class PlayerCompanion implements Listener {
 
         bindPlayer(mp, track);
         setNext();
-    }
-
-    public void playNow(int index) {
-        playNow(model.get(index));
     }
 
     ///////////////////////////////////////////////////ButtonFunctions//////////////////////////////////////////////////

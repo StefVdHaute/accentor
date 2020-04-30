@@ -7,8 +7,8 @@ import accentor.browser.subBrowsers.tracks.TracksModel;
 import accentor.domain.Artist;
 
 public class ArtistDetailModel extends DetailModel<Artist> {
-    private AlbumsModel albumsModel;
-    private TracksModel tracksModel;
+    private final AlbumsModel albumsModel;
+    private final TracksModel tracksModel;
 
     public ArtistDetailModel(Artist artist, BrowseModel browseModel) {
         super(artist, browseModel);

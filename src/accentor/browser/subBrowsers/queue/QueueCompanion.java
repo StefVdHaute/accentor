@@ -2,19 +2,14 @@ package accentor.browser.subBrowsers.queue;
 
 import accentor.Listener;
 import accentor.browser.BrowseCompanion;
-import accentor.browser.subBrowsers.cells.AlbumCell;
-import accentor.browser.subBrowsers.cells.DurationCell;
-import accentor.browser.subBrowsers.cells.NameListCell;
+import accentor.specialistFxElements.cells.AlbumCell;
+import accentor.specialistFxElements.cells.DurationCell;
+import accentor.specialistFxElements.cells.NameListCell;
 import accentor.domain.Track;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
-import javafx.scene.SnapshotParameters;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.scene.image.Image;
 import javafx.scene.input.*;
-import javafx.scene.layout.Background;
-import javafx.scene.paint.Color;
 
 import java.util.List;
 
@@ -27,9 +22,6 @@ public class QueueCompanion implements Listener {
     @FXML public TableColumn<Track, List<Track.TrackArtist>> artist;
     @FXML public TableColumn<Track, String> album;
     @FXML public TableColumn<Track, Integer> length;
-
-    public static DataFormat CUSTOM_TRACK = new DataFormat("custom/track");
-
 
     private final BrowseCompanion superCompanion;
     private final QueueModel model;
@@ -62,6 +54,11 @@ public class QueueCompanion implements Listener {
                     } else if (event.getButton() == MouseButton.PRIMARY) {
                         play(row.getIndex());
                     }
+                }
+            });
+            row.addEventFilter(KeyEvent.KEY_RELEASED, keyEvent -> {
+                if (keyEvent.getCode() == KeyCode.ENTER) {
+                    play(row.getIndex());
                 }
             });
 

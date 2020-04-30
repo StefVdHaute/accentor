@@ -3,26 +3,29 @@ package accentor.browser.subBrowsers.albums;
 import accentor.api.AlbumFinder;
 import accentor.browser.BrowseCompanion;
 import accentor.browser.subBrowsers.TableCompanion;
-import accentor.browser.subBrowsers.cells.DateCell;
-import accentor.browser.subBrowsers.cells.NameListCell;
-import accentor.browser.subBrowsers.cells.PictureCell;
+import accentor.specialistFxElements.cells.DateCell;
+import accentor.specialistFxElements.cells.NameListCell;
+import accentor.specialistFxElements.cells.PictureCell;
 import accentor.domain.Album;
 
+import accentor.specialistFxElements.columns.PictureColumn;
 import javafx.fxml.FXML;
 import javafx.geometry.Pos;
 import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableRow;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 
 import java.time.LocalDate;
 import java.util.List;
 
 public class AlbumsCompanion extends TableCompanion<AlbumsModel, Album, AlbumFinder.SortOption> {
-    private TableColumn<Album, String> cover                   = new TableColumn<>("Cover");
-    private TableColumn<Album, String> title                   = new TableColumn<>("Title");
-    private TableColumn<Album, List<Album.AlbumArtist>> artist = new TableColumn<>("Artist");
-    private TableColumn<Album, LocalDate> release              = new TableColumn<>("Release date");
+    private final TableColumn<Album, String> cover                   = new PictureColumn<>("Cover");
+    private final TableColumn<Album, String> title                   = new TableColumn<>("Title");
+    private final TableColumn<Album, List<Album.AlbumArtist>> artist = new TableColumn<>("Artist");
+    private final TableColumn<Album, LocalDate> release              = new TableColumn<>("Release date");
 
     public AlbumsCompanion(BrowseCompanion superCompanion, AlbumsModel model) {
         super(superCompanion, model);
@@ -36,13 +39,6 @@ public class AlbumsCompanion extends TableCompanion<AlbumsModel, Album, AlbumFin
         super.initialize();
 
         table.getStyleClass().add("picture-table");
-        cover.visibleProperty().addListener(iv -> {
-            if (cover.isVisible()) {
-                table.getStyleClass().add("picture-table");
-            } else {
-                table.getStyleClass().remove("picture-table");
-            }
-        });
 
         table.getColumns().add(cover);
         table.getColumns().add(title);
@@ -88,14 +84,22 @@ public class AlbumsCompanion extends TableCompanion<AlbumsModel, Album, AlbumFin
 
         table.setRowFactory(column -> {
             TableRow<Album> row = new TableRow<>();
-            row.setOnMouseClicked(event -> openTab(row.getItem()));
+            row.setOnMouseClicked(event -> {
+                table.getScene().getStylesheets().add("accentor/stylesheets/wait.css");
+                new Thread(() -> openTab(row.getItem())).start();
+                event.consume();
+            });
+            row.addEventFilter(KeyEvent.KEY_RELEASED, keyEvent -> {
+                if (keyEvent.getCode() == KeyCode.ENTER) {
+                    openTab(row.getItem());
+                    keyEvent.consume();
+                }
+            });
+
             return row;
         });
 
-        table.getItems().addAll(model.getData());
-
-        updateButtons(1, model.getPages());
-        updateLabel();
+        modelHasChanged();
     }
 
     private void openTab(Album album) {

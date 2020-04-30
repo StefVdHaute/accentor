@@ -4,19 +4,18 @@ import accentor.Helper;
 import accentor.api.*;
 import accentor.browser.BrowseModel;
 import accentor.browser.subBrowsers.TableModel;
-import accentor.browser.subBrowsers.cells.AlbumCellCompatible;
-import accentor.browser.subBrowsers.cells.NameListCellCompatible;
+import accentor.specialistFxElements.cells.AlbumCellCompatible;
+import accentor.specialistFxElements.cells.NameListCellCompatible;
 import accentor.domain.Track;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class TracksModel
-        extends TableModel<Track, TrackFinder.SortOption>
+public class TracksModel extends TableModel<Track, TrackFinder.SortOption>
         implements AlbumCellCompatible, NameListCellCompatible<Track.TrackArtist> {
-    private BrowseModel superBrowser;
+    private final BrowseModel superBrowser;
 
-    private TrackFinder ogFinder;
+    private final TrackFinder ogFinder;
     private TrackFinder finder;
 
     public TracksModel(TrackFinder finder, BrowseModel superBrowser) {

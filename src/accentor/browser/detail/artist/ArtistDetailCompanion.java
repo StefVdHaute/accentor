@@ -19,7 +19,7 @@ import javafx.scene.layout.VBox;
 import java.io.IOException;
 
 public class ArtistDetailCompanion extends DetailCompanion<ArtistDetailModel, Artist> {
-    private BrowseCompanion superCompanion;
+    private final BrowseCompanion superCompanion;
 
     public ArtistDetailCompanion(BrowseCompanion superCompanion, ArtistDetailModel model) {
         super(model);

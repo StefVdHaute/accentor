@@ -1,6 +1,6 @@
-package accentor.browser.subBrowsers.cells;
+package accentor.specialistFxElements.cells;
 
-import accentor.browser.PlaceHolderImageView;
+import accentor.specialistFxElements.PlaceHolderImageView;
 import javafx.geometry.Pos;
 import javafx.scene.control.TableCell;
 import javafx.scene.image.Image;
@@ -37,19 +37,4 @@ public class PictureCell<T> extends TableCell<T, String> {
             setGraphic(imageView);
         }
     }
-
-    /*
-    @Override
-    public void updateItem(String url, boolean empty){
-        super.updateItem(url, empty);
-
-        if (empty) {
-            setText(null);
-            setGraphic(null);
-        } else {
-            ImageView imageView = new SlowImageView(url, placeholder);
-            setGraphic(imageView);
-        }
-    }
-    */
 }

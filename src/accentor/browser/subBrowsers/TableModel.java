@@ -1,9 +1,12 @@
 package accentor.browser.subBrowsers;
 
+import accentor.Listener;
+
 import java.util.List;
 
 //TableModel could implement more if sortOptions and finders were generalized :'(
 public abstract class TableModel<T, S> {
+    private Listener listener;
     private int page = 1;
     private int pages = 1;
 
@@ -31,5 +34,13 @@ public abstract class TableModel<T, S> {
 
     public void setPages(int pages) {
         this.pages = pages;
+    }
+
+    public void setListener(Listener listener) {
+        this.listener = listener;
+    }
+
+    public void fireModelHasChanged() {
+        listener.modelHasChanged();
     }
 }

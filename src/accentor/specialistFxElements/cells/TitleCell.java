@@ -1,6 +1,6 @@
-package accentor.browser.subBrowsers.cells;
+package accentor.specialistFxElements.cells;
 
-import accentor.browser.PlaceHolderImageView;
+import accentor.specialistFxElements.PlaceHolderImageView;
 import accentor.domain.Album;
 import javafx.scene.control.TableCell;
 import javafx.scene.image.Image;
@@ -8,7 +8,7 @@ import javafx.scene.layout.AnchorPane;
 
 public class TitleCell extends TableCell<Album, String> {
 
-    private Image placeholder;
+    private final Image placeholder;
 
     public TitleCell(Image placeholder) {
         this.placeholder = placeholder;

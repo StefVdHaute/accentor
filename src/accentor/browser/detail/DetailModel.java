@@ -3,8 +3,8 @@ package accentor.browser.detail;
 import accentor.browser.BrowseModel;
 
 public abstract class DetailModel<T> {
-    private T subject;
-    private BrowseModel browseModel;
+    private final T subject;
+    private final BrowseModel browseModel;
 
     public DetailModel(T subject, BrowseModel browseModel){
         this.browseModel = browseModel;

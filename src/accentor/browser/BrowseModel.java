@@ -14,18 +14,18 @@ import java.util.HashMap;
 import java.util.List;
 
 public class BrowseModel {
-    private ArtistDAO artistDAO;
-    private AlbumDAO albumDAO;
-    private TrackDAO trackDAO;
+    private final ArtistDAO artistDAO;
+    private final AlbumDAO albumDAO;
+    private final TrackDAO trackDAO;
 
-    private QueueModel queueModel;
-    private ArtistsModel artistsModel;
-    private AlbumsModel albumsModel;
-    private TracksModel tracksModel;
+    private final QueueModel queueModel;
+    private final ArtistsModel artistsModel;
+    private final AlbumsModel albumsModel;
+    private final TracksModel tracksModel;
 
-    private HashMap<String, Tab> artistTabs = new HashMap<>();
-    private HashMap<String, Tab> albumTabs = new HashMap<>();
-    private HashMap<String, Album> albumCache = new HashMap<>();
+    private final HashMap<String, Tab> artistTabs = new HashMap<>();
+    private final HashMap<String, Tab> albumTabs = new HashMap<>();
+    private final HashMap<String, Album> albumCache = new HashMap<>();
 
     public BrowseModel(DataAccessContext dac){
         artistDAO = dac.getArtistDAO();

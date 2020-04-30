@@ -1,9 +1,9 @@
-package accentor.browser.subBrowsers.cells;
+package accentor.specialistFxElements.cells;
 
 import javafx.scene.control.TableCell;
 
 public class AlbumCell<T> extends TableCell<T, String> {
-    private AlbumCellCompatible model;
+    private final AlbumCellCompatible model;
 
     public AlbumCell(AlbumCellCompatible model){
         this.model = model;

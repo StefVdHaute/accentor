@@ -5,15 +5,12 @@ import accentor.api.DataAccessException;
 import accentor.api.HttpDataAccessProvider;
 import accentor.browser.BrowseCompanion;
 import accentor.browser.BrowseModel;
-
 import javafx.application.Application;
-import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.image.Image;
 import javafx.scene.layout.BorderPane;
-import javafx.scene.media.MediaPlayer;
 import javafx.stage.Stage;
 
 import java.io.FileInputStream;
@@ -23,25 +20,23 @@ import java.util.List;
 import java.util.Properties;
 
 public class Main extends Application {
-    private Properties accProperties;
-    private HttpDataAccessProvider dap;
     private DataAccessContext dac;
 
     @Override
     public void init() {
         List<String> argList = getParameters().getRaw();
 
-        String propertiesPath = "resources/accentor/accentor.properties";
+        String propertiesPath = "accentor/accentor.properties";
 
         if (!argList.isEmpty()){
             propertiesPath = argList.get(0);
         }
 
         try (InputStream input = new FileInputStream(propertiesPath)) {
-            accProperties = new Properties(0);
+            Properties accProperties = new Properties(0);
             accProperties.load(input);
 
-            dap = new HttpDataAccessProvider(accProperties);
+            HttpDataAccessProvider dap = new HttpDataAccessProvider(accProperties);
             dac = dap.getDataAccessContext();
         } catch (IOException | DataAccessException e) {
             //Can really only be used for the console or trying to connect again
